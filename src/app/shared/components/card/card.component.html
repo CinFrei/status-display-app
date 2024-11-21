@@ -1,1 +1,13 @@
-<p>card works!</p>
+<div class="full-card">
+  <span class="material-symbols-rounded fs-60">{{ data.icon }}</span>
+  <span class="date pr-10"
+    ><strong>{{ data.time }}</strong></span
+  >
+  <div class="pl-10">
+    <p class="ellipsis">
+      <strong>{{ data.day }} </strong> <small>{{ data.date }}</small>
+      <br />
+      {{ data.title }}
+    </p>
+  </div>
+</div>

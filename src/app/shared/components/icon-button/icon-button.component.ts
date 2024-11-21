@@ -1,5 +1,8 @@
-import { Component } from '@angular/core';
+import { Component, Input } from '@angular/core';
 
+interface IconButtonData {
+  icon: string;
+}
 @Component({
   selector: 'app-icon-button',
   imports: [],
@@ -7,5 +10,7 @@ import { Component } from '@angular/core';
   styleUrl: './icon-button.component.scss'
 })
 export class IconButtonComponent {
-
+  @Input() data: IconButtonData = {
+    icon: 'nights_stay',
+  }
 }

@@ -1,0 +1,11 @@
+.grid-3 {
+  width: 100%;
+  height: 100%;
+  display: grid;
+  grid-template-columns: 80px 480px 240px; /* 3 Spalten */
+  grid-template-rows: 600px; /* Gesamthöhe */
+}
+
+// .see {
+//   border: 1px solid #f7168a; /* for Development */
+// }

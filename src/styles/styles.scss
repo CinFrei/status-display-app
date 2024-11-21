@@ -1,2 +1,109 @@
 /* You can add global styles to this file, and also import other style files */
-@import "~bulma/bulma";
+@use "bulma" as *;
+
+/* symbols rounded */
+@import url("https://fonts.googleapis.com/css2?family=Material+Symbols+Rounded:wght@200");
+
+html,
+body {
+  height: 100%;
+}
+body {
+  width: 800px;
+  height: 586px;
+  overflow: hidden;
+  margin: 0;
+  font-family: Roboto, "Helvetica Neue", sans-serif;
+}
+
+$light-gray: #cfcfcf; // hellgrau
+$white: #ffffff; // weiß
+
+.background {
+  background: linear-gradient(
+    45deg,
+    $light-gray 25%,
+    $white 25%,
+    $white 50%,
+    $light-gray 50%,
+    $light-gray 75%,
+    $white 75%,
+    $white
+  );
+  background-size: 40px 40px; // Größe der Streifen
+}
+
+.pl-15 {
+  padding-left: 15px;
+}
+
+.pl-10 {
+  padding-left: 10px;
+}
+
+.pl-5 {
+  padding-left: 5px;
+}
+
+.pr-15 {
+  padding-right: 15px;
+}
+
+.pr-10 {
+  padding-right: 10px;
+}
+
+.pt-15 {
+  padding-top: 15px;
+}
+
+.pt-10 {
+  padding-top: 10px;
+}
+
+.fs-60 {
+  font-size: 60px;
+}
+
+.fs-46 {
+  font-size: 46px;
+}
+
+.color-white {
+  color: #fff;
+}
+
+.bg-bulma-strong-color {
+  background-color: var(--bulma-strong-color);
+}
+
+.border-b {
+  border-bottom: 1px solid var(--bulma-strong-color); /* Platzhalter */
+}
+
+.border-r {
+  border-right: 1px solid var(--bulma-strong-color); /* Platzhalter */
+}
+
+.border-gray-around {
+  border: 2.5px solid #a9a9a9;
+}
+
+.circle {
+  border-style: solid;
+  border-color: var(--bulma-strong-color);
+  border-radius: 30px;
+  width: 60px;
+  height: 60px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.date {
+  width: 60px;
+  height: 60px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}

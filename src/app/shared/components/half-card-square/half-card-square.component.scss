@@ -1,18 +1,24 @@
-.full-card {
-  width: 470px;
+.half-card {
+  width: 239px;
   height: 80px;
-  margin: 2.5px;
-  padding: 5px 0;
+  margin: 2.5px 0;
+  padding: 5px 0 5px 5px;
   display: flex;
   flex-direction: row;
   align-items: center;
-  justify-content: center;
+  justify-content: flex-start;
   align-content: space-around;
   flex-wrap: wrap;
 }
 
-.ellipsis {
-  width: 320px; /* Breite des Containers */
+.half-card-square {
+  width: 110px;
+  display: flex;
+  justify-content: center;
+}
+
+.ellipsis-half {
+  width: 145px; /* Breite des Containers */
   white-space: nowrap; /* Verhindert Zeilenumbrüche */
   overflow: hidden; /* Schneidet überstehenden Inhalt ab */
   text-overflow: ellipsis; /* Zeigt "..." für abgeschnittenen Text an */
