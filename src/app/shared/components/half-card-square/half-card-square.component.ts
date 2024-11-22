@@ -1,6 +1,6 @@
 import { Component, Input } from '@angular/core';
 
-interface HalfCardSquareData {
+export interface HalfCardSquareData {
   icon: string;
   icon2: string;
 }

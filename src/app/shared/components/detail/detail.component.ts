@@ -3,8 +3,9 @@ import { TimeComponent } from "../../../features/time/components/time/time.compo
 import { IconButtonComponent } from "../icon-button/icon-button.component";
 import { AkkuComponent } from "../../../features/akku/components/akku/akku.component";
 import { RouterModule } from '@angular/router';
+import { WeatherComponent } from '../../../features/weather/components/weather/weather.component';
 
-interface DetailData {
+export interface DetailData {
   contentColumn1: Component;
   contentColumn2: Component;
 }
@@ -16,5 +17,8 @@ interface DetailData {
   styleUrl: './detail.component.scss'
 })
 export class DetailComponent {
-
+  // @Input() data: DetailData={
+  // contentColumn1:,
+  // contentColumn2:,
+  // }
 }

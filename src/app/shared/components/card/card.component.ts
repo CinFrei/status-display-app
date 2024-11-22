@@ -1,6 +1,6 @@
 import { Component, Input } from '@angular/core';
 
-interface CardData {
+export interface CardData {
   day: string;
   date: string;
   title: string;

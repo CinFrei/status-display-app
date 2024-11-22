@@ -1,6 +1,6 @@
 import { Component, Input } from '@angular/core';
 
-interface IconButtonData {
+export interface IconButtonData {
   icon: string;
 }
 @Component({

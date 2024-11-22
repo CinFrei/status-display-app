@@ -1,12 +1,12 @@
 import { Component, Input } from '@angular/core';
 
-interface HalfCardData {
+export interface HalfCardData {
   icon: string;
-  time: string;
-  delay: number;
-  vehicle: string;
-  direction: string;
+  contentStrong: string;
+  content1: string;
+  content2: string;
 }
+
 @Component({
   selector: 'app-half-card',
   imports: [],
@@ -16,9 +16,8 @@ interface HalfCardData {
 export class HalfCardComponent {
   @Input() data: HalfCardData = {
     icon: 'directions_bus',
-    time: '23:55',
-    delay: 6,
-    vehicle: 'BUS 696',
-    direction: 'Wallachia Dracula Castle',
+    contentStrong: '23:55 +6',
+    content1: 'BUS 696 Wallachia Dracula Castle',
+    content2: '',
   }
 }
