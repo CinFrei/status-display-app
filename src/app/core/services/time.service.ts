@@ -57,6 +57,13 @@ export class TimeService {
     return `${now.getDate()}. ${monthName} 1${now.getFullYear()}`;
   }
 
+  // Holt den aktuellen Wochentag ausgeschrieben wie "Sonntag"
+  getCurrentWeekDay(): string {
+    const days = ['Sonntag', 'Montag', 'Dienstag', 'Mittwoch', 'Donnerstag', 'Freitag', 'Samstag'];
+    const now = new Date();
+    return days[now.getDay()];
+  }
+
   // Gibt den aktuellen Uhrzeit-Stream zurück (Observable)
   getTime$() {
     return this.timeSubject.asObservable();
@@ -69,6 +76,11 @@ export class TimeService {
 
   // Gibt den aktuellen Datum-Stream zurück (Observable)
   getDate$() {
+    return this.dateSubject.asObservable();
+  }
+
+  // Gibt den aktuellen Wochentag-Stream zurück (Observable)
+  getCurrendWeekDay$() {
     return this.dateSubject.asObservable();
   }
 }
