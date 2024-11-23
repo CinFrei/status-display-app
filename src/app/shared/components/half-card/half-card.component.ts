@@ -1,23 +1,26 @@
-import { Component, Input } from '@angular/core';
+import { AsyncPipe } from '@angular/common';
+import { ChangeDetectionStrategy, Component, Input } from '@angular/core';
+import { Observable } from 'rxjs';
 
 export interface HalfCardData {
   icon: string;
   contentStrong: string;
-  content1: string;
+  content1: Observable<string | null>;
   content2: string;
 }
 
 @Component({
   selector: 'app-half-card',
-  imports: [],
+  imports: [AsyncPipe],
   templateUrl: './half-card.component.html',
-  styleUrl: './half-card.component.scss'
+  styleUrl: './half-card.component.scss',
+  changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class HalfCardComponent {
   @Input() data: HalfCardData = {
     icon: 'directions_bus',
     contentStrong: '23:55 +6',
-    content1: 'BUS 696 Wallachia Dracula Castle',
+    content1: new Observable<'BUS 696 Wallachia Dracula Castle'>,
     content2: '',
   }
 }

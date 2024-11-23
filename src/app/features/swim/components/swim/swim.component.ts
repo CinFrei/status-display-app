@@ -1,9 +1,9 @@
 import { Component } from '@angular/core';
-import { SwimService } from '../../services/swim.service';
-import { Subscription } from 'rxjs';
+import { BehaviorSubject, map, Observable, of, Subscription } from 'rxjs';
 import { TimeService } from '../../../../core/services/time.service';
 import { HalfCardComponent } from "../../../../shared/components/half-card/half-card.component";
 import { HalfCardData } from '../../../../shared/components/half-card/half-card.component';
+import swimClubData from '../../../../../assets/swim-club-times.json'
 
 @Component({
   selector: 'app-swim',
@@ -12,37 +12,26 @@ import { HalfCardData } from '../../../../shared/components/half-card/half-card.
   styleUrl: './swim.component.scss',
 })
 export class SwimComponent {
-  //Vars
-  public swimClubTime: string = ''; // Hier speichern wir die Schwimmzeit
-  private subscriptions: Subscription[] = [];
+  private swimClubTimeSubject = new BehaviorSubject<string>('Lade Schwimmzeit...');
+
+  swimClubTime$: Observable<string | null> = this.swimClubTimeSubject.asObservable();
 
   swimHalfCardData: HalfCardData = {
     icon: 'tsunami',
     contentStrong: '',
-    content1: this.swimClubTime,
-    content2: 'blub',
+    content1: this.swimClubTime$,
+    content2: 'Läd noch.',
   };
 
-  constructor(
-    private swimService: SwimService,
-    private timeService: TimeService,
-  ) { }
+  constructor(private timeService: TimeService,) { }
 
   ngOnInit(): void {
-    const weekDay = this.timeService.getCurrentWeekDay(); // Holt den Wochentag
-    // Hole die Schwimmclub-Zeiten und zeige sie für den aktuellen Tag
-    this.swimService.getSwimClubTimes().subscribe((jData) => {
-      // Hole die Zeit für den aktuellen Tag
-      const newSwimTime = jData['swim-club-week'][weekDay];
-      if (this.swimClubTime !== newSwimTime) {
-        this.swimClubTime = newSwimTime; // Nur wenn sich die Zeit geändert hat
-        this.swimHalfCardData.content1 = newSwimTime; // Update nur dann, wenn notwendig
-      }
-    });
-  }
+    // Holt den Wochentag
+    const currentDay$ = this.timeService.getCurrentWeekDay() as keyof typeof swimClubData.swimClubWeek;;
 
-  ngOnDestroy(): void {
-    // Kündige alle Subscriptions
-    this.subscriptions.forEach(sub => sub.unsubscribe());
+    // Json als Observable
+    this.swimClubTimeSubject.next(
+      swimClubData.swimClubWeek[currentDay$] || 'Keine Schwimmzeit verfügbar'
+    );
   }
 }
