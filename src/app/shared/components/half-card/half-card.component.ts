@@ -1,26 +1,31 @@
-import { AsyncPipe } from '@angular/common';
-import { ChangeDetectionStrategy, Component, Input } from '@angular/core';
-import { Observable } from 'rxjs';
+import { CommonModule } from '@angular/common';
+import { Component, Input } from '@angular/core';
+import { Observable, of } from 'rxjs';
 
-export interface HalfCardData {
+export interface StaticHalfCardData {
   icon: string;
-  contentStrong: string;
+  applyStrongTag: boolean;
+}
+
+export interface DynamicHalfCardData {
   content1: Observable<string | null>;
   content2: string;
 }
 
 @Component({
   selector: 'app-half-card',
-  imports: [AsyncPipe],
+  imports: [CommonModule],
   templateUrl: './half-card.component.html',
   styleUrl: './half-card.component.scss',
-  changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class HalfCardComponent {
-  @Input() data: HalfCardData = {
+  // Statische Daten
+  @Input() statData: StaticHalfCardData = {
     icon: 'directions_bus',
-    contentStrong: '23:55 +6',
-    content1: new Observable<'BUS 696 Wallachia Dracula Castle'>,
-    content2: '',
-  }
+    applyStrongTag: true,
+  };
+
+  // Dynamische Daten
+  @Input() obsDataContent1!: Observable<string | null>;
+  @Input() obsDataContent2: string = '';
 }

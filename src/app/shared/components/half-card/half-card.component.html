@@ -1,14 +1,14 @@
 <div class="half-card">
-  <span class="material-symbols-rounded fs-60"> {{ data.icon }} </span>
+  <span class="material-symbols-rounded fs-60">{{ statData.icon }}</span>
   <div class="pl-10">
     <p class="ellipsis-half">
-      <strong>{{ data.contentStrong }}</strong>
+      <strong *ngIf="statData.applyStrongTag">{{
+        obsDataContent1 | async
+      }}</strong>
+      <span *ngIf="!statData.applyStrongTag">{{
+        obsDataContent1 | async
+      }}</span>
     </p>
-    <p>
-      {{ data.content1 | async }}
-    </p>
-    <p>
-      {{ data.content2 }}
-    </p>
+    <p class="ellipsis-half">{{ obsDataContent2 }}</p>
   </div>
 </div>
