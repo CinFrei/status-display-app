@@ -64,6 +64,11 @@ export class TimeService {
     return days[now.getDay()];
   }
 
+  getToday(): number {
+    const now = new Date();
+    return now.getDay();
+  }
+
   // Gibt den aktuellen Uhrzeit-Stream zurück (Observable)
   getTime$() {
     return this.timeSubject.asObservable();
@@ -79,8 +84,13 @@ export class TimeService {
     return this.dateSubject.asObservable();
   }
 
-  // Gibt den aktuellen Wochentag-Stream zurück (Observable)
+  // Gibt den aktuellen Wochentag-Stream ausgeschrieben zurück (Observable)
   getCurrendWeekDay$() {
+    return this.dateSubject.asObservable();
+  }
+
+  // Gibt den aktuellen Wochentag-Stream als Zahl zurück (Observable)
+  getToday$() {
     return this.dateSubject.asObservable();
   }
 }
