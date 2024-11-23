@@ -1,35 +1,37 @@
 import { Component } from '@angular/core';
-import { BehaviorSubject, map, Observable, of, Subscription } from 'rxjs';
+import { BehaviorSubject, map, Observable, of } from 'rxjs';
 import { TimeService } from '../../../../core/services/time.service';
-import { HalfCardComponent } from "../../../../shared/components/half-card/half-card.component";
-import { HalfCardData } from '../../../../shared/components/half-card/half-card.component';
-import swimClubData from '../../../../../assets/swim-club-times.json'
+import { StaticHalfCardData, HalfCardComponent } from "../../../../shared/components/half-card/half-card.component";
+import swimClubData from '../../../../../assets/swim-club-times.json';
 
 @Component({
   selector: 'app-swim',
-  imports: [HalfCardComponent],
   templateUrl: './swim.component.html',
-  styleUrl: './swim.component.scss',
+  styleUrls: ['./swim.component.scss'],
+  imports: [HalfCardComponent],
 })
 export class SwimComponent {
   private swimClubTimeSubject = new BehaviorSubject<string>('Lade Schwimmzeit...');
 
   swimClubTime$: Observable<string | null> = this.swimClubTimeSubject.asObservable();
 
-  swimHalfCardData: HalfCardData = {
+  // Statische Daten für die Kindkomponente
+  statData: StaticHalfCardData = {
     icon: 'tsunami',
-    contentStrong: '',
-    content1: this.swimClubTime$,
-    content2: 'Läd noch.',
+    applyStrongTag: false,
   };
 
-  constructor(private timeService: TimeService,) { }
+  // Dynamische Daten (Observable)
+  obsDataContent1$: Observable<string | null> = this.swimClubTime$.pipe(
+    map((time) => time || 'Keine Schwimmzeit verfügbar')
+  );
+
+  obsDataContent2: string = 'Läd noch.';
+
+  constructor(private timeService: TimeService) { }
 
   ngOnInit(): void {
-    // Holt den Wochentag
-    const currentDay$ = this.timeService.getCurrentWeekDay() as keyof typeof swimClubData.swimClubWeek;;
-
-    // Json als Observable
+    const currentDay$ = this.timeService.getCurrentWeekDay() as keyof typeof swimClubData.swimClubWeek;
     this.swimClubTimeSubject.next(
       swimClubData.swimClubWeek[currentDay$] || 'Keine Schwimmzeit verfügbar'
     );
