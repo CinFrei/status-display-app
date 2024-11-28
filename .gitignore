@@ -43,3 +43,6 @@ Thumbs.db
 
 # Enviroment vars
 .env
+process.env
+api.env
+secrets.env
