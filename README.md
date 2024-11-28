@@ -2,6 +2,42 @@
 
 This project was generated using [Angular CLI](https://github.com/angular/angular-cli) version 19.0.0.
 
+# Your Own Environment Vars
+
+To generate Environment older and files
+
+```bash
+ng generate environments
+```
+
+in environment.ts
+
+```bash
+export const environment = {
+  production: true,
+  latitude: 'xx.xx',
+  longitude: 'xx.xx',
+  timezone: 'time',
+};
+```
+
+in environment.development.ts
+
+```bash
+export const environment = {
+  production: false,
+  latitude: 'xx.xx',
+  longitude: 'xx.xx',
+  timezone: 'time',
+};
+```
+
+to use
+
+```bash
+ng serve
+```
+
 ## Development server
 
 To start a local development server, run:
