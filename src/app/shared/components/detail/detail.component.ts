@@ -1,9 +1,8 @@
 import { Component, Input } from '@angular/core';
 import { TimeComponent } from "../../../features/time/components/time/time.component";
-import { IconButtonComponent } from "../icon-button/icon-button.component";
 import { AkkuComponent } from "../../../features/akku/components/akku/akku.component";
 import { RouterModule } from '@angular/router';
-import { WeatherComponent } from '../../../features/weather/components/weather/weather.component';
+import { IconCircleComponent } from '../icon-circle/icon-circle.component';
 
 export interface DetailData {
   contentColumn1: Component;
@@ -12,7 +11,7 @@ export interface DetailData {
 
 @Component({
   selector: 'app-detail',
-  imports: [RouterModule, TimeComponent, IconButtonComponent, AkkuComponent],
+  imports: [RouterModule, IconCircleComponent, TimeComponent, AkkuComponent],
   templateUrl: './detail.component.html',
   styleUrl: './detail.component.scss'
 })
