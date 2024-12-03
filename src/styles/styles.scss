@@ -88,22 +88,3 @@ $white: #ffffff; // weiß
 .border-gray-around {
   border: 2.5px solid #a9a9a9;
 }
-
-.circle {
-  border-style: solid;
-  border-color: var(--bulma-strong-color);
-  border-radius: 30px;
-  width: 60px;
-  height: 60px;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-}
-
-.date {
-  width: 60px;
-  height: 60px;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-}

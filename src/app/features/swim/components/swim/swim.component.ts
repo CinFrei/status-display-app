@@ -11,9 +11,10 @@ import swimClubData from '../../../../../assets/swim-club-times.json';
   imports: [HalfCardComponent],
 })
 export class SwimComponent {
-  private swimClubTimeSubject = new BehaviorSubject<string>('Lade Schwimmzeit...');
+  private swimClubTimeSubject$ = new BehaviorSubject<string>('Lade Schwimmzeit...');
 
-  swimClubTime$: Observable<string | null> = this.swimClubTimeSubject.asObservable();
+  swimClubTime$: Observable<string | null> = this.swimClubTimeSubject$.asObservable();
+
 
   // Statische Daten für die Kindkomponente
   statData: StaticHalfCardData = {
@@ -32,7 +33,7 @@ export class SwimComponent {
 
   ngOnInit(): void {
     const currentDay$ = this.timeService.getCurrentWeekDay() as keyof typeof swimClubData.swimClubWeek;
-    this.swimClubTimeSubject.next(
+    this.swimClubTimeSubject$.next(
       swimClubData.swimClubWeek[currentDay$] || 'Keine Schwimmzeit verfügbar'
     );
   }
