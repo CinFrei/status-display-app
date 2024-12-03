@@ -1,9 +1,9 @@
 import { Component } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { WeatherDataProcessingService } from '../../services/weather-data-processing.service';
-import { WeatherAPIService } from '../../services/weather-api.service';
-import { Subject, takeUntil } from 'rxjs';
+import { BehaviorSubject, Subject, takeUntil } from 'rxjs';
 import { IconCircleComponent } from "../../../../shared/components/icon-circle/icon-circle.component";
+import { CompactWeatherData, WeatherDescriptionData, CompactData } from '../../interfaces/weather-data-processing.interfaces';
 
 @Component({
   selector: 'app-weather',
@@ -14,43 +14,31 @@ import { IconCircleComponent } from "../../../../shared/components/icon-circle/i
 export class WeatherComponent {
   private readonly destroy$ = new Subject<void>();
 
-  currentWeather: any;
-  todaysWeather: any;
-  forecastWeather: any;
+  // Rückfalldaten definieren
+  private readonly fallbackData: CompactWeatherData = {
+    temperatur15: -420, // Beispielwert
+    wetterCode15: { description: 'No Data', icon: 'close' }, // Beispielwert
+    compact: null // Beispielereignis
+  };
 
-  //icon
-  //content
+  // Observable für die Wetterdaten
+  compact$ = new BehaviorSubject<CompactWeatherData>(this.fallbackData);
 
-  // //Bsp
-  // // Dynamische Daten (Observable)
-  // obsDataContent1$: Observable<string | null> = this.swimClubTime$.pipe(
-  //   map((time) => time || 'Keine Schwimmzeit verfügbar')
-  // );
-  // obsDataContent2: string = 'Läd noch.';
 
-  constructor(private weatherDataService: WeatherDataProcessingService, private weatherAPIService: WeatherAPIService) { }
+  constructor(private weatherDataService: WeatherDataProcessingService) { }
 
   ngOnInit() {
-    this.weatherDataService.processCurrentWeather()
-      .pipe(takeUntil(this.destroy$)) // Stoppt die Subscription bei Zerstörung der Komponente
-      .subscribe((data) => {
-        console.log('Aktuelle Vorhersage:', data);
-        this.currentWeather = data;
+    this.weatherDataService
+      .processCompactWeather()
+      .pipe(takeUntil(this.destroy$))
+      .subscribe({
+        next: (data) => this.compact$.next(data || this.fallbackData),
+        error: (err) => {
+          console.error('Fehler beim Laden der Wetterdaten:', err);
+          this.compact$.next(this.fallbackData); // Fallback verwenden
+        }
       });
-
-    this.weatherDataService.processTodaysWeather()
-      .pipe(takeUntil(this.destroy$)) // Stoppt die Subscription bei Zerstörung der Komponente
-      .subscribe((data) => {
-        console.log('Aktuelle Vorhersage:', data);
-        this.todaysWeather = data;
-      });
-
-    this.weatherDataService.processForecastWeather()
-      .pipe(takeUntil(this.destroy$)) // Stoppt die Subscription bei Zerstörung der Komponente
-      .subscribe((data) => {
-        console.log('Aktuelle Vorhersage:', data);
-        this.forecastWeather = data;
-      });
+    console.log(this.compact$);
   }
 
   ngOnDestroy() {

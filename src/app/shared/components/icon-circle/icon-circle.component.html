@@ -1,8 +1,15 @@
-<div class="pt-15">
-  <div class="box circle bg-bulma-strong-color">
-    <span class="material-symbols-rounded fs-46 color-white">
+<div
+  class="space is-flex is-flex-direction-column is-align-items-center is-justify-content-center"
+>
+  <div class="circle bg-bulma-strong-color">
+    <!-- Zeigt das Icon an, wenn es vorhanden ist -->
+    <span *ngIf="icon" class="material-symbols-rounded fs-46 color-white">
       {{ icon }}
     </span>
-    <strong>{{ content }}</strong>
+    <!-- Zeigt den Content an, wenn kein Icon vorhanden ist -->
+    <p *ngIf="!icon" class="color-white">
+      {{ content }}
+    </p>
   </div>
+  <strong *ngIf="value"> {{ value }} </strong>
 </div>

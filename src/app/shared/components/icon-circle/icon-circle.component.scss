@@ -1,0 +1,21 @@
+.space {
+  height: 80px;
+}
+.circle {
+  border-style: solid;
+  border-color: var(--bulma-strong-color);
+  border-radius: 30px;
+  width: 60px;
+  height: 60px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+p {
+  white-space: nowrap;
+}
+
+strong {
+  height: 10px;
+}

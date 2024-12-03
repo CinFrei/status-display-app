@@ -1,10 +1,10 @@
 import { CommonModule } from '@angular/common';
 import { Component, Input } from '@angular/core';
-import { Observable } from 'rxjs';
 
 export interface DynamicIconCircleData {
-  icon: Observable<string | null>;
-  content: Observable<string | null>;
+  icon: string | null;
+  content: string | number | null;
+  value: string | number | null;
 }
 @Component({
   selector: 'app-icon-circle',
@@ -14,6 +14,7 @@ export interface DynamicIconCircleData {
 })
 export class IconCircleComponent {
   // Dynamische Daten
-  @Input() icon!: Observable<string | null>;
-  @Input() content!: Observable<string | null>;
+  @Input() icon!: string | null; // Icon (Material-Design-Symbol)
+  @Input() content!: string | number | null;
+  @Input() value!: string | number | null;
 }

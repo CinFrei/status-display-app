@@ -3,7 +3,7 @@ import { Injectable } from '@angular/core';
 import { BehaviorSubject, catchError, defer, interval, Observable, of, shareReplay, startWith, switchMap, tap, timer } from 'rxjs';
 import { TimersService } from '../../../core/services/timers.service';
 import { environment } from '../../../../environments/environment';
-// import { environment } from '../environments/environment';
+import { AirQualityForecastAPI, CurrentForecastAPI, HourlyForecastAPI, TenDaysForecastAPI, TodaysForecastAPI } from '../interfaces/weather-api.interfaces';
 
 @Injectable({
   providedIn: 'root'
@@ -23,10 +23,12 @@ export class WeatherAPIService {
   private forecastHourly = 'forecast_hours';
   private forecastM15 = 'forecast_minutely_15';
 
-  private currentWeatherUrl = `${this.url}${this.dwd}?${this.latitude}&${this.longitude}&${this.listM15}=temperature_2m,weather_code,relative_humidity_2m,precipitation&${this.timezone}&${this.forecastM15}=1&models=icon_seamless`;
-  private hourlyForecastWeatherUrl = `${this.url}${this.dwd}?${this.latitude}&${this.longitude}&hourly=relative_humidity_2m,wind_speed_10m,wind_direction_10m,lightning_potential,precipitation,snowfall,rain,showers&${this.timezone}&${this.forecastHourly}=12&models=icon_seamless`;
-  private todaysWeatherUrl = `${this.url}${this.dwd}?${this.latitude}&${this.longitude}&${this.listDaily}=sunrise,sunset,daylight_duration,sunshine_duration,precipitation_hours,precipitation_probability_max&${this.timezone}&${this.forecastDays}=1&models=icon_seamless`;
-  private tenDaysForecastWeatherUrl = `${this.url}${this.dwd}?${this.latitude}&${this.longitude}&${this.listDaily}=weather_code,temperature_2m_max,temperature_2m_min,precipitation_probability_max&${this.timezone}&${this.forecastDays}=10&models=icon_seamless`;
+  // https://api.open-meteo.com/v1/dwd-icon?latitude=53.62&longitude=10.13&current=weather_code&timezone=Europe%2FBerlin&forecast_days=1&models=icon_d2
+
+  private currentWeatherUrl = `${this.url}${this.dwd}?${this.latitude}&${this.longitude}&${this.listM15}=temperature_2m,weather_code,relative_humidity_2m,precipitation&${this.timezone}&${this.forecastM15}=1&models=icon_d2`;
+  private hourlyForecastWeatherUrl = `${this.url}${this.dwd}?${this.latitude}&${this.longitude}&hourly=relative_humidity_2m,wind_speed_10m,wind_direction_10m,lightning_potential,precipitation,snowfall,rain,showers&${this.timezone}&${this.forecastHourly}=12&models=icon_d2`;
+  private todaysWeatherUrl = `${this.url}${this.dwd}?${this.latitude}&${this.longitude}&${this.listDaily}=sunrise,sunset,daylight_duration,sunshine_duration,precipitation_hours,precipitation_probability_max&${this.timezone}&${this.forecastDays}=1&models=icon_d2`;
+  private tenDaysForecastWeatherUrl = `${this.url}${this.dwd}?${this.latitude}&${this.longitude}&${this.listDaily}=weather_code,temperature_2m_max,temperature_2m_min,precipitation_probability_max&${this.timezone}&${this.forecastDays}=10&models=icon_d2`;
   private airQualityForecastUrl = `${this.airUrl}v1/air-quality?${this.latitude}&${this.longitude}&${this.listHourly}=uv_index,uv_index_clear_sky,alder_pollen,birch_pollen,grass_pollen,mugwort_pollen,olive_pollen,ragweed_pollen&${this.timezone}&${this.forecastHourly}=12`;
 
   public callCount = 0;
@@ -60,8 +62,10 @@ export class WeatherAPIService {
    * und gibt die Antwort als kaltes Observable zurück
    */
 
+
+
   //   für den aktuellen Wetter-API - Aufruf(alle 15 Minuten aktuell)
-  private currentSubject = new BehaviorSubject<any | null>(null);
+  private currentSubject = new BehaviorSubject<CurrentForecastAPI | null>(null);
 
   private initializeCurrentWeatherUpdates() {
     this.timersService.getQuarterHourTimer()
@@ -78,21 +82,21 @@ export class WeatherAPIService {
       });
   }
 
-  private fetchCurrentForecast(): Observable<any> {
+  private fetchCurrentForecast(): Observable<CurrentForecastAPI> {
     this.callCount++;
     const currentCall = this.callCount;
-    return this.http.get<any>(this.currentWeatherUrl).pipe(
+    return this.http.get<CurrentForecastAPI>(this.currentWeatherUrl).pipe(
       tap(data => console.log(`API Call #${currentCall}:`, data)), // Loggt die API-Calls
     );
   }
 
-  getCurrentForecast(): Observable<any> {
+  getCurrentForecast(): Observable<CurrentForecastAPI | null> {
     return this.currentSubject.asObservable(); // Liefert ein Observable des Subjects
   }
 
 
   // für den stündlichen 12 - Stunden - Wettervorhersage - API - Aufruf
-  private hourlySubject = new BehaviorSubject<any | null>(null);
+  private hourlySubject = new BehaviorSubject<HourlyForecastAPI | null>(null);
 
   private initializeHourlyForecastUpdates() {
     this.timersService.getHourlyTimer()
@@ -109,21 +113,21 @@ export class WeatherAPIService {
       });
   }
 
-  private fetchHourlyForecast(): Observable<any> {
+  private fetchHourlyForecast(): Observable<HourlyForecastAPI> {
     this.callCount++;
     const currentCall = this.callCount;
-    return this.http.get<any>(this.hourlyForecastWeatherUrl).pipe(
-      tap(data => console.log(`API Call #${currentCall}:`, data)), // Loggt die API-Calls
+    return this.http.get<HourlyForecastAPI>(this.hourlyForecastWeatherUrl).pipe(
+      // tap(data => console.log(`API Call #${currentCall}:`, data)), // Loggt die API-Calls
     );
   }
 
-  getHourlyForecast(): Observable<any> {
+  getHourlyForecast(): Observable<HourlyForecastAPI | null> {
     return this.hourlySubject.asObservable(); // Liefert ein Observable des Subjects
   }
 
 
   // für die täglichen, stabileren Wetterdaten(einmal am Tag)
-  private todaysSubject = new BehaviorSubject<any | null>(null);
+  private todaysSubject = new BehaviorSubject<TodaysForecastAPI | null>(null);
 
   private initializeTodaysWeatherUpdates() {
     this.timersService.getDailyTimer()
@@ -140,21 +144,21 @@ export class WeatherAPIService {
       });
   }
 
-  private fetchTodaysForecast(): Observable<any> {
+  private fetchTodaysForecast(): Observable<TodaysForecastAPI> {
     this.callCount++;
     const currentCall = this.callCount;
-    return this.http.get<any>(this.todaysWeatherUrl).pipe(
-      tap(data => console.log(`API Call #${currentCall}:`, data)), // Loggt die API-Calls
+    return this.http.get<TodaysForecastAPI>(this.todaysWeatherUrl).pipe(
+      // tap(data => console.log(`API Call #${currentCall}:`, data)), // Loggt die API-Calls
     );
   }
 
-  getTodaysForecast(): Observable<any> {
+  getTodaysForecast(): Observable<TodaysForecastAPI | null> {
     return this.todaysSubject.asObservable(); // Liefert ein Observable des Subjects
   }
 
 
   // // für den 10 - Tage - Wettervorhersage - API - Aufruf
-  private tenDaysForecastSubject = new BehaviorSubject<any | null>(null);
+  private tenDaysForecastSubject = new BehaviorSubject<TenDaysForecastAPI | null>(null);
 
   private initialize10DaysForecastUpdates() {
     this.timersService.getDailyTimer()
@@ -171,21 +175,21 @@ export class WeatherAPIService {
       });
   }
 
-  private fetch10DaysForecast(): Observable<any> {
+  private fetch10DaysForecast(): Observable<TenDaysForecastAPI> {
     this.callCount++;
     const currentCall = this.callCount;
-    return this.http.get<any>(this.tenDaysForecastWeatherUrl).pipe(
-      tap(data => console.log(`API Call #${currentCall}:`, data)), // Loggt die API-Calls
+    return this.http.get<TenDaysForecastAPI>(this.tenDaysForecastWeatherUrl).pipe(
+      // tap(data => console.log(`API Call #${currentCall}:`, data)), // Loggt die API-Calls
     );
   }
 
-  get10DaysForecast(): Observable<any> {
+  get10DaysForecast(): Observable<TenDaysForecastAPI | null> {
     return this.tenDaysForecastSubject.asObservable(); // Liefert ein Observable des Subjects
   }
 
 
   // für die stündlich 12 - Stunden - Wettervorhersage der Luftqualitätsdaten - API
-  private airQualitySubject = new BehaviorSubject<any | null>(null);
+  private airQualitySubject = new BehaviorSubject<AirQualityForecastAPI | null>(null);
 
   private initializeAirQualityForecastUpdates() {
     this.timersService.getHourlyTimer()
@@ -202,15 +206,15 @@ export class WeatherAPIService {
       });
   }
 
-  private fetchAirQualityForecast(): Observable<any> {
+  private fetchAirQualityForecast(): Observable<AirQualityForecastAPI> {
     this.callCount++;
     const currentCall = this.callCount;
-    return this.http.get<any>(this.airQualityForecastUrl).pipe(
-      tap(data => console.log(`API Call #${currentCall}:`, data)), // Loggt die API-Calls
+    return this.http.get<AirQualityForecastAPI>(this.airQualityForecastUrl).pipe(
+      // tap(data => console.log(`API Call #${currentCall}:`, data)), // Loggt die API-Calls
     );
   }
 
-  getAirQualityForecast(): Observable<any> {
+  getAirQualityForecast(): Observable<AirQualityForecastAPI | null> {
     return this.airQualitySubject.asObservable(); // Liefert ein Observable des Subjects
   }
 
