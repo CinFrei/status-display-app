@@ -1,15 +1,20 @@
 <div
   class="space is-flex is-flex-direction-column is-align-items-center is-justify-content-center"
 >
-  <div class="circle bg-bulma-strong-color">
-    <!-- Zeigt das Icon an, wenn es vorhanden ist -->
-    <span *ngIf="icon" class="material-symbols-rounded fs-46 color-white">
-      {{ icon }}
-    </span>
-    <!-- Zeigt den Content an, wenn kein Icon vorhanden ist -->
-    <p *ngIf="!icon" class="color-white">
-      {{ content }}
-    </p>
+  <div class="oval">
+    <div class="wrapper">
+      <!-- Zeigt den Content an, wenn kein Icon vorhanden ist -->
+      <div class="content">
+        <strong *ngIf="content" class="color-white">
+          {{ content }}
+        </strong>
+      </div>
+      <!-- Zeigt das Icon an, wenn es vorhanden ist -->
+      <div class="content">
+        <span *ngIf="icon" class="material-symbols-rounded fs-46 color-white">
+          {{ icon }}
+        </span>
+      </div>
+    </div>
   </div>
-  <strong *ngIf="value"> {{ value }} </strong>
 </div>

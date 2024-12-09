@@ -2,7 +2,19 @@
 @use "bulma" as *;
 
 /* symbols rounded */
-@import url("https://fonts.googleapis.com/css2?family=Material+Symbols+Rounded:wght@200");
+@import url("https://fonts.googleapis.com/css2?family=Material+Symbols+Rounded:opsz,wght,FILL,GRAD@48,300,1,200");
+
+:root {
+  --bulma-primary-h: 220deg;
+  --bulma-primary-s: 14%;
+  --bulma-primary-l: 21%;
+  --bulma-info-h: 220deg;
+  --bulma-info-s: 14%;
+  --bulma-info-l: 51%;
+  --bulma-success-h: 220deg;
+  --bulma-success-s: 14%;
+  --bulma-success-l: 82%;
+}
 
 html,
 body {

@@ -1,21 +1,19 @@
 .space {
   height: 80px;
 }
-.circle {
+.oval {
   border-style: solid;
-  border-color: var(--bulma-strong-color);
+  border-color: var(--bulma-primary-25);
   border-radius: 30px;
   width: 60px;
-  height: 60px;
+  height: 80px;
   display: flex;
-  align-items: center;
   justify-content: center;
+  align-items: center;
+  background-color: var(--bulma-primary-25);
+  rotate: 45deg;
 }
-
-p {
-  white-space: nowrap;
-}
-
-strong {
-  height: 10px;
+.content {
+  rotate: -45deg;
+  margin: 0;
 }
