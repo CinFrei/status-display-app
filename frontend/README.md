@@ -10,6 +10,7 @@ To generate Environment older and files
 ng generate environments
 ```
 
+This will create environment.ts and environment.development.ts.
 in environment.ts
 
 ```bash
