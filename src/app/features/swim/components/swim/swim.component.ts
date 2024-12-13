@@ -1,20 +1,18 @@
 import { Component } from '@angular/core';
-import { BehaviorSubject, map, Observable, of } from 'rxjs';
-import { TimeService } from '../../../../core/services/time.service';
+import { BehaviorSubject, map, Observable, Subject, takeUntil } from 'rxjs';
 import { StaticHalfCardData, HalfCardComponent } from "../../../../shared/components/half-card/half-card.component";
-import swimClubData from '../../../../../assets/swim-club-times.json';
+import { SwimService } from '../../services/swim.service';
+import { SwimClubTimes } from '../../interfaces/swim.interfaces';
+import { CommonModule } from '@angular/common';
 
 @Component({
   selector: 'app-swim',
   templateUrl: './swim.component.html',
   styleUrls: ['./swim.component.scss'],
-  imports: [HalfCardComponent],
+  imports: [CommonModule, HalfCardComponent],
 })
 export class SwimComponent {
-  private swimClubTimeSubject$ = new BehaviorSubject<string>('Lade Schwimmzeit...');
-
-  swimClubTime$: Observable<string | null> = this.swimClubTimeSubject$.asObservable();
-
+  private readonly destroy$ = new Subject<void>();
 
   // Statische Daten für die Kindkomponente
   statData: StaticHalfCardData = {
@@ -22,19 +20,25 @@ export class SwimComponent {
     applyStrongTag: false,
   };
 
+  // Rückfalldaten SwimClubTimeData definieren
+  private readonly fallbackDataSwimClub: string = 'Läd noch.';
   // Dynamische Daten (Observable)
-  obsDataContent1$: Observable<string | null> = this.swimClubTime$.pipe(
-    map((time) => time || 'Keine Schwimmzeit verfügbar')
-  );
-
+  swimClubTime$ = new BehaviorSubject<string>(this.fallbackDataSwimClub);
+  // Ausstehendes Observable
   obsDataContent2: string = 'Läd noch.';
 
-  constructor(private timeService: TimeService) { }
+  constructor(private swimService: SwimService) { }
 
   ngOnInit(): void {
-    const currentDay$ = this.timeService.getCurrentWeekDay() as keyof typeof swimClubData.swimClubWeek;
-    this.swimClubTimeSubject$.next(
-      swimClubData.swimClubWeek[currentDay$] || 'Keine Schwimmzeit verfügbar'
-    );
+    this.swimService.getSwimClubTimes()
+      .pipe(takeUntil(this.destroy$))
+      .subscribe({
+        next: (data) => this.swimClubTime$.next(data || this.fallbackDataSwimClub),
+        error: (err) => {
+          console.error('Fehler beim Laden der Wetterdaten:', err);
+          this.swimClubTime$.next(this.fallbackDataSwimClub); // Fallback verwenden
+        }
+      })
+
   }
 }

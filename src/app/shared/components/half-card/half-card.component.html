@@ -2,12 +2,8 @@
   <span class="material-symbols-rounded fs-60">{{ statData.icon }}</span>
   <div class="pl-10">
     <p class="ellipsis-half">
-      <strong *ngIf="statData.applyStrongTag">{{
-        obsDataContent1 | async
-      }}</strong>
-      <span *ngIf="!statData.applyStrongTag">{{
-        obsDataContent1 | async
-      }}</span>
+      <strong *ngIf="statData.applyStrongTag">{{ obsDataContent1 }}</strong>
+      <span *ngIf="!statData.applyStrongTag">{{ obsDataContent1 }}</span>
     </p>
     <p class="ellipsis-half">{{ obsDataContent2 }}</p>
   </div>

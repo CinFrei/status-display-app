@@ -1,6 +1,8 @@
-<app-half-card
-  [statData]="statData"
-  [obsDataContent1]="obsDataContent1$"
-  [obsDataContent2]="obsDataContent2"
->
-</app-half-card>
+<ng-container *ngIf="swimClubTime$ | async as data">
+  <app-half-card
+    [statData]="statData"
+    [obsDataContent1]="data"
+    [obsDataContent2]="obsDataContent2"
+  >
+  </app-half-card>
+</ng-container>

@@ -1,5 +1,5 @@
 import { CommonModule } from '@angular/common';
-import { Component, Input } from '@angular/core';
+import { ChangeDetectionStrategy, Component, Input, SimpleChanges } from '@angular/core';
 import { Observable, of } from 'rxjs';
 
 export interface StaticHalfCardData {
@@ -8,8 +8,8 @@ export interface StaticHalfCardData {
 }
 
 export interface DynamicHalfCardData {
-  content1: Observable<string | null>;
-  content2: string;
+  content1: string | null;
+  content2: string | null;
 }
 
 @Component({
@@ -17,6 +17,7 @@ export interface DynamicHalfCardData {
   imports: [CommonModule],
   templateUrl: './half-card.component.html',
   styleUrl: './half-card.component.scss',
+  changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class HalfCardComponent {
   // Statische Daten
@@ -26,6 +27,14 @@ export class HalfCardComponent {
   };
 
   // Dynamische Daten
-  @Input() obsDataContent1!: Observable<string | null>;
-  @Input() obsDataContent2: string = '';
+  @Input() obsDataContent1!: string | null;
+  @Input() obsDataContent2!: string | null;
+
+  // ngOnChanges(changes: SimpleChanges): void {
+  //   console.log('ngOnChanges detected', changes);
+  // }
+
+  // ngDoCheck(): void {
+  //   console.log('Change Detection wurde ausgelöst SWIMM.');
+  // }
 }
