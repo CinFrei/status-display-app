@@ -1,1 +1,5 @@
-<p>calendar works!</p>
+<ul>
+  <li *ngFor="let event of events">
+    {{ event.summary }} ({{ event.start.dateTime | date : "short" }})
+  </li>
+</ul>
