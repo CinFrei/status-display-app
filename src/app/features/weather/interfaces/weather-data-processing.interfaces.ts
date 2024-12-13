@@ -10,8 +10,8 @@ export interface CompactData {
 
 export interface CompactWeatherData {
   temperatur15: number;
-  wetterCode15: WeatherDescriptionData | null;
-  compact: CompactData[] | null;
+  wetterCode15: WeatherDescriptionData;
+  compact: CompactData[];
 }
 
 export interface ForecastWeatherData {

@@ -5,13 +5,13 @@
     <div class="wrapper">
       <!-- Zeigt den Content an, wenn kein Icon vorhanden ist -->
       <div class="content">
-        <strong *ngIf="content" class="color-white">
+        <strong class="color-white">
           {{ content }}
         </strong>
       </div>
       <!-- Zeigt das Icon an, wenn es vorhanden ist -->
-      <div class="content">
-        <span *ngIf="icon" class="material-symbols-rounded fs-46 color-white">
+      <div class="icon">
+        <span class="material-symbols-rounded fs-46 color-white">
           {{ icon }}
         </span>
       </div>
