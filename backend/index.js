@@ -6,32 +6,58 @@ require('dotenv').config();
 const app = express();
 app.use(bodyParser.json());
 
+const cors = require('cors');
+app.use(cors({ origin: 'http://localhost:4200' }));
+
 // Authentifizierung mit dem Dienstkonto
 const auth = new google.auth.GoogleAuth({
   keyFile: './service-account.json', // Pfad zur JSON-Datei
   scopes: ['https://www.googleapis.com/auth/calendar.readonly'], // Nur lesender Zugriff
 });
 
+function getTimeRange() {
+  const now = new Date();
+  const twoWeeksLater = new Date();
+  twoWeeksLater.setDate(now.getDate() + 14);
+
+  return {
+    timeMin: now.toISOString(),
+    timeMax: twoWeeksLater.toISOString()
+  };
+}
+
 app.get('/api/calendar', async (req, res) => {
+  const { timeMin, timeMax } = getTimeRange();
+
   try {
     const calendar = google.calendar({ version: 'v3', auth });
-    const response = await calendar.events.list({
-      calendarId: process.env.CALENDAR_ID, // Dein Kalender
-      maxResults: 10,
-      singleEvents: true,
-      orderBy: 'startTime',
-    });
+    const calendarIds = [
+      process.env.CALENDAR_ID, // Primary
+      process.env.BIRTHSDAYS_CALENDAR_ID, // Birthdays
+      'de.german#holiday@group.v.calendar.google.com', // Hollidays
+      process.env.MOON_CALENDAR_ID // Moonphase
+    ];
 
-    // Logge die gesamte Antwort
-    console.log('API Response:', response.data);
+    const allEvents = [];
+    for (const id of calendarIds) {
+      const response = await calendar.events.list({
+        calendarId: id,
+        timeMin,
+        timeMax,
+        singleEvents: true,
+        orderBy: 'startTime',
+      });
+      allEvents.push(...(response.data.items || []));
+    }
 
-    // Rückgabe der Event-Liste
-    res.json(response.data.items || []); // Leere Liste, falls keine Events vorhanden sind
+    // Nach Datum sortieren
+    allEvents.sort((a, b) =>
+      new Date(a.start.dateTime || a.start.date) - new Date(b.start.dateTime || b.start.date)
+    );
+
+    res.json(allEvents);
   } catch (error) {
-    // Logge den Fehler
     console.error('Fehler beim Abrufen der Kalenderdaten:', error);
-
-    // Sende Fehlermeldung an den Client
     res.status(500).send('Fehler beim Abrufen der Kalenderdaten');
   }
 });
