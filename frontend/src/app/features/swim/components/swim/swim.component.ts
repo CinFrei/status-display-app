@@ -1,44 +1,40 @@
-import { Component } from '@angular/core';
-import { BehaviorSubject, map, Observable, Subject, takeUntil } from 'rxjs';
+import { Component, OnDestroy, OnInit } from '@angular/core';
+import { Subject, Observable } from 'rxjs';
 import { StaticHalfCardData, HalfCardComponent } from "../../../../shared/components/half-card/half-card.component";
 import { SwimService } from '../../services/swim.service';
-import { SwimClubTimes } from '../../interfaces/swim.interfaces';
 import { CommonModule } from '@angular/common';
 
 @Component({
   selector: 'app-swim',
-  templateUrl: './swim.component.html',
-  styleUrls: ['./swim.component.scss'],
   imports: [CommonModule, HalfCardComponent],
+  templateUrl: './swim.component.html',
+  styleUrls: ['./swim.component.scss']
 })
-export class SwimComponent {
+export class SwimComponent implements OnInit, OnDestroy {
   private readonly destroy$ = new Subject<void>();
 
   // Statische Daten für die Kindkomponente
   statData: StaticHalfCardData = {
-    icon: 'tsunami',
-    applyStrongTag: false,
+    icon: 'wave', // Name der SVG-Datei
+    iconType: 'svg',
+    applyStrongTag: false
   };
 
-  // Rückfalldaten SwimClubTimeData definieren
-  private readonly fallbackDataSwimClub: string = 'Läd noch.';
-  // Dynamische Daten (Observable)
-  swimClubTime$ = new BehaviorSubject<string>(this.fallbackDataSwimClub);
-  // Ausstehendes Observable
-  obsDataContent2: string = 'Läd noch.';
+  // Dynamische Daten direkt aus dem Service (Observable)
+  swimClubTime$!: Observable<string>;
+
+  // Fallback für zweite Datenquelle (falls erforderlich)
+  obsDataContent2: string = 'Lädt noch.';
 
   constructor(private swimService: SwimService) { }
 
   ngOnInit(): void {
-    this.swimService.getSwimClubTimes()
-      .pipe(takeUntil(this.destroy$))
-      .subscribe({
-        next: (data) => this.swimClubTime$.next(data || this.fallbackDataSwimClub),
-        error: (err) => {
-          console.error('Fehler beim Laden der Wetterdaten:', err);
-          this.swimClubTime$.next(this.fallbackDataSwimClub); // Fallback verwenden
-        }
-      })
+    // swimClubTime$ hier initialisieren, um Zugriff vor der Konstruktor-Initialisierung zu vermeiden
+    this.swimClubTime$ = this.swimService.swimClubTime$;
+  }
 
+  ngOnDestroy(): void {
+    this.destroy$.next();
+    this.destroy$.complete();
   }
 }

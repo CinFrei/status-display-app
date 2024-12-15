@@ -1,10 +1,11 @@
 import { CommonModule } from '@angular/common';
 import { ChangeDetectionStrategy, Component, Input, SimpleChanges } from '@angular/core';
-import { Observable, of } from 'rxjs';
 
 export interface StaticHalfCardData {
   icon: string;
+  iconType: 'svg' | 'font';
   applyStrongTag: boolean;
+  iconSvg?: string;  // Kann entweder der SVG-Inhalt oder ein Pfad sein
 }
 
 export interface DynamicHalfCardData {
@@ -24,6 +25,7 @@ export class HalfCardComponent {
   @Input() statData: StaticHalfCardData = {
     icon: 'directions_bus',
     applyStrongTag: true,
+    iconType: 'font'
   };
 
   // Dynamische Daten
