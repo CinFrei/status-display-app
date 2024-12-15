@@ -5,13 +5,16 @@ import { TimersService } from '../../../core/services/timers.service';
 import { CalendarEvent } from '../components/interfaces/calendar.interfaces';
 import { TimeService } from '../../../core/services/time.service';
 import { CardData } from '../../../shared/components/card/card.component';
+import { environment } from '../../../../environments/environment';
 
 @Injectable({
   providedIn: 'root',
 })
 export class CalendarService {
   private callCount = 0;
-  private calendarEventURL = `http://localhost:3000/api/calendar`;
+  private calendarEventURL = `${environment.backendCalendarUrl}`;
+  // private calendarEventURL = `http://backend:3000/api/calendar`;
+
 
   // Zwischenspeicher für Kalenderdaten
   private calendarEvents$ = new BehaviorSubject<CalendarEvent[]>([]);

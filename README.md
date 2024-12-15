@@ -58,3 +58,5 @@ Once both servers are running, the application will be accessible in your browse
 For further details on how to work with the Angular frontend, please refer to the [frontend/README.md](frontend/README.md).
 
 For further details on how to work with the Node.js/Express.js backend, please refer to the [backend/README.md](backend/README.md).
+
+Dieses Projekt nutzt einen angepassten Fork von [Kindle Touch Kiosk](https://github.com/bishopdynamics/kindle-touch-kiosk), der unter der MIT-Lizenz veröffentlicht wurde.
