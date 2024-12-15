@@ -19,18 +19,19 @@ services:
     ports:
       - "5901:5900"
     environment:
-      - URL=https://www.hvv.de/de/fahrplaene/abruf-fahrplaninfos/abfahrten-auf-ihrem-monitor/abfahrten-anzeige?show=e475a5224aae4a0bb3b998c5e34186d6
+      # - URL=https://www.hvv.de/de/fahrplaene/abruf-fahrplaninfos/abfahrten-auf-ihrem-monitor/abfahrten-anzeige?show=e475a5224aae4a0bb3b998c5e34186d6
+      - URL=http://frontend:4200/
       - WINDOW_WIDTH=600
       - WINDOW_HEIGHT=800
       - SCALE=1.5
       - EXTRA_X_ARGS=-nocursor
       - EXTRA_VNC_ARGS=-nocursor
-      - EXTRA_CHROMIUM_ARGS=--user-data-dir=/userdata --enable-user-stylesheet=/userdata/custom.css
+      # - EXTRA_CHROMIUM_ARGS=--user-data-dir=/userdata --enable-user-stylesheet=/userdata/custom.css
     shm_size: '1gb'
     privileged: true
     volumes:
       - /opt/vnc-kiosk-server-1:/userdata
-      - ./custom.css:/userdata/custom.css  # Lokale custom.css in den Container einbinden
+      # - ./custom.css:/userdata/custom.css  # Lokale custom.css in den Container einbinden
 
   # vnc-kiosk-server-2:
   #   image: bishopdynamics/vnc-kiosk-server:latest

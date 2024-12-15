@@ -1,0 +1,37 @@
+version: '3.9'
+services:
+  backend:
+    build:
+      context: ./status-display-app-backend
+    ports:
+      - "3000:3000"
+    networks:
+      - app-network
+
+  frontend:
+    build:
+      context: ./status-display-app-frontend
+    ports:
+      - "4200:4200"
+    networks:
+      - app-network
+    depends_on:
+      - backend
+
+  kiosk:
+    build:
+      context: ./kiosk
+    networks:
+      - app-network
+    ports:
+      - "5901:5900"
+    environment:
+      - URL=http://frontend:4200
+    depends_on:
+      - frontend
+      - backend
+    privileged: true
+
+networks:
+  app-network:
+    driver: bridge

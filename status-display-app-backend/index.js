@@ -7,7 +7,7 @@ const app = express();
 app.use(bodyParser.json());
 
 const cors = require('cors');
-app.use(cors({ origin: 'http://localhost:4200' }));
+app.use(cors());
 
 // Authentifizierung mit dem Dienstkonto
 const auth = new google.auth.GoogleAuth({
