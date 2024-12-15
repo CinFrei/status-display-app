@@ -1,36 +1,38 @@
 import { Injectable } from '@angular/core';
-import { BehaviorSubject } from 'rxjs';
+import { BehaviorSubject, interval, map, startWith, Subject } from 'rxjs';
 
 @Injectable({
   providedIn: 'root', // sorgt dafür, dass der Service global verfügbar ist
 })
 export class TimeService {
-  private timeSubject: BehaviorSubject<string> = new BehaviorSubject(this.getCurrentTime());
-  private tenMinSubject: BehaviorSubject<string> = new BehaviorSubject(this.getEvery10Minutes());
-  private dateSubject: BehaviorSubject<string> = new BehaviorSubject(this.getCurrentDate());
+  private timeSubject = new BehaviorSubject(this.getCurrentTime());
+  private tenMinSubject = new BehaviorSubject(this.getEvery10Minutes());
+  private dateSubject = new BehaviorSubject(this.getCurrentDate());
+  private weekDaySubject = new BehaviorSubject(this.getCurrentWeekDay());
 
-  private timeInterval: any;
-  private tenMinInterval: any;
+  private timeInterval$ = interval(6000).pipe(
+    startWith(0), // Start sofort mit einem Wert
+    map(() => this.getCurrentTime()) // Aktualisiere die Zeit jede Minute
+  );
 
-  constructor() {
-    // Setzt einen Interval, um die Zeit alle 10 Minuten zu aktualisieren
-    setInterval(() => {
-      this.tenMinSubject.next(this.getEvery10Minutes());
-    }, 10000); // alle 10 Minuten (10.000 ms)
+  private tenMinInterval$ = interval(60000).pipe(
+    startWith(0), // Start sofort
+    map(() => this.getEvery10Minutes()) // Aktualisiere alle 10 Minuten
+  );
 
-    // Setzt einen Interval, um die Zeit alle 10 Minuten zu aktualisieren
-    setInterval(() => {
-      this.timeSubject.next(this.getCurrentTime());
-    }, 6000); // jede Minute (6.000 ms)
-  }
+  private subscriptions = [
+    this.timeInterval$.subscribe(this.timeSubject),
+    this.tenMinInterval$.subscribe(this.tenMinSubject)
+  ];
+
+  constructor() { }
 
   ngOnDestroy(): void {
-    // Stoppt die Intervalle, wenn der Service zerstört wird
-    clearInterval(this.timeInterval);
-    clearInterval(this.tenMinInterval);
+    // Beende die Subscriptions, wenn der Service zerstört wird
+    this.subscriptions.forEach(subscription => subscription.unsubscribe());
   }
 
-  // Holt die aktuelle Zeit im Format HH:MM (was ist padstart?)
+  // Holt die aktuelle Zeit im Format HH:MM
   getCurrentTime(): string {
     const now = new Date();
     const hours = now.getHours().toString().padStart(2, '0');
@@ -47,6 +49,17 @@ export class TimeService {
 
   // Holt das aktuelle Datum im Format TT. Month 1YYYY
   // (Human Era Calendar add 10.000 years to Gregorian Calendar, kurzgesagt in a nutshell)
+  getCurrentDateHE(): string {
+    const now = new Date();
+    const months = [
+      'Januar', 'Februar', 'März', 'April', 'Mai', 'Juni',
+      'Juli', 'August', 'September', 'Oktober', 'November', 'Dezember'
+    ];
+    const monthName = months[now.getMonth()];
+    return `${now.getDate()}. ${monthName} ${now.getFullYear() + 10000}`; // Human Era
+  }
+
+  // Holt das aktuelle Datum im Format TT. Month YYYY
   getCurrentDate(): string {
     const now = new Date();
     const months = [
@@ -54,7 +67,7 @@ export class TimeService {
       'Juli', 'August', 'September', 'Oktober', 'November', 'Dezember'
     ];
     const monthName = months[now.getMonth()];
-    return `${now.getDate()}. ${monthName} 1${now.getFullYear()}`;
+    return `${now.getDate()}. ${monthName} ${now.getFullYear()}`;
   }
 
   // Holt den aktuellen Wochentag ausgeschrieben wie "Sonntag"
@@ -64,10 +77,7 @@ export class TimeService {
     return days[now.getDay()];
   }
 
-  getToday(): number {
-    const now = new Date();
-    return now.getDay();
-  }
+  // Public Observable-Methoden
 
   // Gibt den aktuellen Uhrzeit-Stream zurück (Observable)
   getTime$() {
@@ -89,8 +99,4 @@ export class TimeService {
     return this.dateSubject.asObservable();
   }
 
-  // Gibt den aktuellen Wochentag-Stream als Zahl zurück (Observable)
-  getToday$() {
-    return this.dateSubject.asObservable();
-  }
 }

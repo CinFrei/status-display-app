@@ -1,7 +1,7 @@
 import { Component } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { WeatherDataProcessingService } from '../../services/weather-data-processing.service';
-import { BehaviorSubject, Subject, takeUntil } from 'rxjs';
+import { Observable, Subject } from 'rxjs';
 import { IconCircleComponent } from "../../../../shared/components/icon-circle/icon-circle.component";
 import { CompactWeatherData } from '../../interfaces/weather-data-processing.interfaces';
 
@@ -12,35 +12,15 @@ import { CompactWeatherData } from '../../interfaces/weather-data-processing.int
   styleUrls: ['./weather.component.scss']
 })
 export class WeatherComponent {
-  private readonly destroy$ = new Subject<void>();
-
-  // Rückfalldaten definieren
-  private readonly fallbackData: CompactWeatherData = {
-    temperatur15: -420, // Beispielwert
-    wetterCode15: { description: 'No Data', icon: 'close' }, // Beispielwert
-    compact: [] // Beispielereignis als leeres Array
-  };
-
   // Observable für die Wetterdaten
-  compact$ = new BehaviorSubject<CompactWeatherData>(this.fallbackData);
+  compact$!: Observable<CompactWeatherData | null>;
 
   constructor(private weatherDataService: WeatherDataProcessingService) { }
 
   ngOnInit() {
-    this.weatherDataService
-      .processCompactWeather()
-      .pipe(takeUntil(this.destroy$))
-      .subscribe({
-        next: (data) => this.compact$.next(data || this.fallbackData),
-        error: (err) => {
-          console.error('Fehler beim Laden der Wetterdaten:', err);
-          this.compact$.next(this.fallbackData); // Fallback verwenden
-        }
-      });
-  }
+    this.weatherDataService.processCompactWeather();
 
-  ngOnDestroy() {
-    this.destroy$.next(); // Signalisiert das Ende
-    this.destroy$.complete(); // Schließt das Subject
+    this.compact$ = this.weatherDataService.processCompactWeather$;
+    console.log('ja wetter komponente', this.compact$)
   }
 }

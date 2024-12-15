@@ -1,15 +1,21 @@
 import { Injectable } from '@angular/core';
 import { WeatherAPIService } from './weather-api.service';
-import { catchError, combineLatest, map, Observable, of } from 'rxjs';
+import { BehaviorSubject, catchError, combineLatest, map, Observable, of } from 'rxjs';
 import { AirQualityData, CompactData, CompactWeatherData, CurrentWeatherData, ForecastWeatherData, HourlyForecastData, TodaysWeatherData, WeatherDescriptionData } from '../interfaces/weather-data-processing.interfaces';
 import { AirQualityForecastAPI, CurrentForecastAPI, HourlyForecastAPI } from '../interfaces/weather-api.interfaces';
-
-
 
 @Injectable({
   providedIn: 'root'
 })
 export class WeatherDataProcessingService {
+  private readonly compactSubject = new BehaviorSubject<CompactWeatherData | null>({
+    temperatur15: -420,
+    wetterCode15: { description: 'No Data', icon: 'close' },
+    compact: []
+  });
+  processCompactWeather$ = this.compactSubject.asObservable();
+
+
   constructor(private weatherAPIService: WeatherAPIService) { }
 
   /**
@@ -38,7 +44,6 @@ export class WeatherDataProcessingService {
     air: AirQualityForecastAPI | null
   ): CompactWeatherData | null {
     if (!current || !hourly || !air) {
-      console.warn('Fehlende Daten für mapCompactWeather:', { current, hourly, air });
       return null;
     }
 
@@ -60,14 +65,11 @@ export class WeatherDataProcessingService {
     const temperatur15 = this.getRoundedTemperatur(current.minutely_15.temperature_2m[0]);
     const wetterCode15 = this.getWeatherDescription(current.minutely_15.weather_code[0]);
 
-    console.log('mapCompactWeather Ergebnis:', { temperatur15, wetterCode15, compact });
-
     return { temperatur15, wetterCode15, compact };
   }
 
-
-  processCompactWeather(): Observable<CompactWeatherData | null> {
-    return combineLatest([
+  processCompactWeather(): void {
+    combineLatest([
       this.weatherAPIService.getCurrentForecast(),
       this.weatherAPIService.getHourlyForecast(),
       this.weatherAPIService.getAirQualityForecast(),
@@ -77,7 +79,12 @@ export class WeatherDataProcessingService {
         console.error('Fehler bei der Verarbeitung von Kompakten Wetterdaten:', err);
         return of(null);
       })
-    );
+    ).subscribe({
+      next: (compact) => this.compactSubject.next(compact),
+      error: (err) => {
+        console.error('Fehler beim Aktualisieren der SwimClubTimes:', err);
+      }
+    });
   }
 
   private mapCurrentWeather(data: any): CurrentWeatherData {

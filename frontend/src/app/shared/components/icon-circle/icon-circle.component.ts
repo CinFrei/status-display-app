@@ -17,11 +17,11 @@ export class IconCircleComponent {
   @Input() icon!: string | null; // Icon (Material-Design-Symbol)
   @Input() content!: string | number | null;
 
-  ngOnChanges(changes: SimpleChanges): void {
-    console.log('ngOnChanges wetter detected', changes);
-  }
+  // ngOnChanges(changes: SimpleChanges): void {
+  //   console.log('ngOnChanges wetter detected', changes);
+  // }
 
-  ngDoCheck(): void {
-    console.log('Change Detection wurde ausgelöst WETTER.');
-  }
+  // ngDoCheck(): void {
+  //   console.log('Change Detection wurde ausgelöst WETTER.');
+  // }
 }

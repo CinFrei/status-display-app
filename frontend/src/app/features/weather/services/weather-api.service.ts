@@ -39,6 +39,7 @@ export class WeatherAPIService {
 
   public callCount = 0;
 
+  // sollten http anfragen lieber nicht im constrictor aufgerufen werden und dafür dann im nuzter? in diesem fall in weather-data-service?
   constructor(
     private http: HttpClient,
     private timersService: TimersService) {
@@ -109,7 +110,7 @@ export class WeatherAPIService {
     this.callCount++;
     const currentCall = this.callCount;
     return this.http.get<T>(url).pipe(
-      tap(data => console.log(`API Call #${currentCall}:`, data)),
+      // tap(data => console.log(`API Call #${currentCall}:`, data)),
       catchError(err => {
         console.error(`Fehler bei API Call #${currentCall}:`, err);
         return of(null as T);
