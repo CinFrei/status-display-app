@@ -15,76 +15,62 @@ export class CalendarService {
   private calendarEventURL = `${environment.backendCalendarUrl}`;
   // private calendarEventURL = `http://backend:3000/api/calendar`;
 
-
-  // Zwischenspeicher für Kalenderdaten
-  private calendarEvents$ = new BehaviorSubject<CalendarEvent[]>([]);
-
-  // Observable mit transformierten Daten für die Kartenansicht
+  private calendarEventsSubject = new BehaviorSubject<CalendarEvent[]>([]);
+  readonly calendarEvents$ = this.calendarEventsSubject.asObservable();
   readonly cardData$ = this.calendarEvents$.pipe(
-    map(events =>
-      events.map(event => this.transformToCardData(event))
-    ),
-    catchError((err) => {
+    map(events => events.map(event => this.transformToCardData(event))),
+    catchError(err => {
       console.error('Fehler in cardData$:', err);
-      return of([]); // Leere Liste als Fallback
+      return of([]); // Fallback
     })
   );
 
-  constructor(private http: HttpClient, private timeService: TimeService, private timersService: TimersService) {
-    this.initializeCalendarEvents();
+  constructor(
+    private http: HttpClient,
+    private timersService: TimersService,
+    private timeService: TimeService
+  ) {
+    this.setupDailyUpdates();
   }
 
-  private initializeCalendarEvents() {
-    // Einmal täglich Kalenderdaten aktualisieren
-    this.timersService.getDailyTimer()
-      .pipe(
-        startWith(0), // Erzwingt eine initiale Emission (0 steht für den Initialstart)
-        switchMap(() => this.fetchCalendarEvents()), // API-Aufruf
-        catchError((err) => {
-          console.error('Fehler beim Abrufen der Kalenderdaten:', err);
-          return of([]); // Leere Liste als Fallback für Fehler
-        })
-      )
-      .subscribe((data) => {
-        this.calendarEvents$.next(data); // Neue Daten zum Zwischenspeichern ins Subject pushen
-      });
+  // Setzt tägliche Updates auf
+  private setupDailyUpdates(): void {
+    this.timersService.getDailyTimer().pipe(
+      startWith(0), // Initialer Start
+      switchMap(() => this.fetchCalendarEvents()), // API-Daten abrufen
+      catchError(err => {
+        console.error('Fehler beim Abrufen der Kalenderdaten:', err);
+        return of([]); // Leere Liste als Fallback
+      })
+    ).subscribe(events => this.calendarEventsSubject.next(events));
   }
 
-  // Holt Kalenderdaten von der API
+  // API-Daten abrufen
   private fetchCalendarEvents(): Observable<CalendarEvent[]> {
     this.callCount++;
     const currentCall = this.callCount;
     return this.http.get<CalendarEvent[]>(this.calendarEventURL).pipe(
-      tap(data => console.log(`API Call #${currentCall}:`, data)), // Loggt die API-Calls
+      tap(events => console.log(`API Call #${currentCall}:`, events))
     );
   }
 
-  // Gibt das Observable der Kalenderdaten zurück
-  getCalendarEvents(): Observable<CalendarEvent[] | null> {
-    return this.calendarEvents$.asObservable(); // Liefert ein Observable des Subjects
-  }
-
-  // Wandelt ein Kalenderereignis in Kartendaten um
+  // Transformiert Event-Daten in Card-Daten
   private transformToCardData(event: CalendarEvent): CardData {
-    const startDate = event.start.dateTime || event.start.date || '';
-    const date = new Date(startDate);
-
+    const date = new Date(event.start.dateTime || event.start.date || '');
     return {
       day: this.getDayLabel(date),
       date: this.formatDate(date),
       title: event.summary,
       time: this.formatTime(date),
-      icon: 'calendar_today', // Beispiel: Hier könntest du Logik für spezifische Icons einfügen
+      icon: this.getOrganizerIcon(event.organizer.displayName, event.creator.email),
     };
   }
 
   private getDayLabel(date: Date): string {
-    const today = new Date;
-    if (date.toDateString() === today.toDateString()) return 'Heute';
-    const tomorrow = new Date(today);
-    tomorrow.setDate(today.getDate() + 1);
-    if (date.toDateString() === tomorrow.toDateString()) return 'Morgen';
-    return date.toLocaleDateString('de-DE', { weekday: 'long' });
+    const today = new Date();
+    const isToday = date.toDateString() === today.toDateString();
+    const isTomorrow = date.toDateString() === new Date(today.setDate(today.getDate() + 1)).toDateString();
+    return isToday ? 'Heute' : isTomorrow ? 'Morgen' : date.toLocaleDateString('de-DE', { weekday: 'long' });
   }
 
   private formatDate(date: Date): string {
@@ -94,4 +80,15 @@ export class CalendarService {
   private formatTime(date: Date): string {
     return date.toLocaleTimeString('de-DE', { hour: '2-digit', minute: '2-digit' });
   }
+
+  private getOrganizerIcon(organizer: string, creator: string): string {
+    const icons: { [key: string]: { [key: string]: string } } = {
+      'Feiertage in Deutschland': { 'de.german#holiday@group.v.calendar.google.com': 'star' },
+      'Phases of the Moon': { 'ht3jlfaac5lfd6263ulfh4tql8@group.calendar.google.com': 'dark_mode' },
+      'Dandys Haushalt': { 'cindy.freiberg@gmail.com': 'face_4', 'd.froebel@gmail.com': 'face_6' },
+      'Geburtstage': { 'cindy.freiberg@gmail.com': 'cake' },
+    };
+    return icons[organizer]?.[creator] || 'calendar_today';
+  }
+
 }
