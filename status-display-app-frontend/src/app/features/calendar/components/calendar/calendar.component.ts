@@ -1,31 +1,27 @@
-import { Component } from '@angular/core';
+import { Component, OnInit } from '@angular/core';
 import { CalendarService } from '../../services/calendar.service';
 import { CommonModule } from '@angular/common';
-import { Subject } from 'rxjs';
-import { CardComponent, CardData } from "../../../../shared/components/card/card.component";
+import { Observable } from 'rxjs';
+import { CardComponent } from "../../../../shared/components/card/card.component";
+import { TransformedEvent } from '../interfaces/calendar.interfaces';
 
 @Component({
   selector: 'app-calendar',
+  standalone: true,
   imports: [CommonModule, CardComponent],
   templateUrl: './calendar.component.html',
-  styleUrl: './calendar.component.scss'
+  styleUrls: ['./calendar.component.scss']
 })
-export class CalendarComponent {
-  private readonly destroy$ = new Subject<void>();
-
-  cardData: CardData[] = [];
+export class CalendarComponent implements OnInit {
+  cardEvent$!: Observable<TransformedEvent[]>; // Kompaktes Event für die Karte
 
   constructor(private calendarService: CalendarService) { }
 
-  ngOnInit() {
-    this.calendarService.cardData$.subscribe(data => {
-      this.cardData = data;
-      console.log('Transformed CardData:', data);
-    });
-  }
+  ngOnInit(): void {
+    // Initialisiere die Daten
+    this.calendarService.initializeCalendarEvents();
+    this.calendarService.processCardEvents(); // Kompaktes Event erstellen
 
-  ngOnDestroy() {
-    this.destroy$.next(); // Signalisiert das Ende
-    this.destroy$.complete(); // Schließt das Subject
+    this.cardEvent$ = this.calendarService.cardEvent$;
   }
 }

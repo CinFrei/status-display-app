@@ -1,3 +1,3 @@
-<div *ngFor="let card of cardData">
-  <app-card [data]="card"></app-card>
-</div>
+<ng-container *ngIf="cardEvent$ | async as data">
+  <app-card *ngFor="let event of data" [data]="event"></app-card>
+</ng-container>
