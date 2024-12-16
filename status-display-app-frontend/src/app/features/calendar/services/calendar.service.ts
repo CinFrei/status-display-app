@@ -1,6 +1,6 @@
 import { Injectable } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
-import { BehaviorSubject, catchError, map, Observable, of, startWith, switchMap, tap } from 'rxjs';
+import { BehaviorSubject, catchError, combineLatest, map, Observable, of, startWith, switchMap, tap } from 'rxjs';
 import { TimersService } from '../../../core/services/timers.service';
 import { CalendarEvent, TransformedEvent } from '../components/interfaces/calendar.interfaces';
 import { TimeService } from '../../../core/services/time.service';
@@ -18,13 +18,23 @@ export class CalendarService {
   private calendarEventsSubject$ = new BehaviorSubject<CalendarEvent[]>([]);
   readonly calendarEvents$ = this.calendarEventsSubject$.asObservable();
 
-  private readonly cardEventSubject = new BehaviorSubject<TransformedEvent[]>([])
-  cardEvent$ = this.cardEventSubject.asObservable();
+  private readonly eventsListSubject = new BehaviorSubject<TransformedEvent[]>([])
+  eventsList$ = this.eventsListSubject.asObservable();
+
+  private currentPageSubject = new BehaviorSubject<number>(0);
+  currentPage$ = this.currentPageSubject.asObservable();
+
+  // Paginierungsparameter
+  public currentPage = 0;
+  public pageSize = 7;
+  public totalItems = 0;
 
   constructor(
     private http: HttpClient,
     private timersService: TimersService,
   ) {
+    this.initializeCalendarEvents();     // Initialisiere die Daten
+    this.eventsList(); // Kompaktes Event erstellen
   }
 
   // Holt täglich CalendarEvents
@@ -55,15 +65,42 @@ export class CalendarService {
     );
   }
 
-  processCardEvents(): void {
+  // Event-Liste verarbeiten
+  eventsList(): void {
     this.calendarEvents$.pipe(
       map((events) => this.transformToCardData(events)), // Wandle CalendarEvent in TransformedEvent[] um
-      tap(data => console.log('processCardEvents', data)),
+      tap(data => {
+        console.log('eventsList', data);
+        this.totalItems = data.length; // Gesamtanzahl der bearbeiteten Events setzen
+      }),
       catchError((err) => {
         console.error('Fehler bei der Verarbeitung von Events:', err);
-        return of([] as TransformedEvent[]);  // Leeres Array korrekt als TransformedEvent[] typisieren
+        return of([] as TransformedEvent[]);
       })
-    ).subscribe(data => this.cardEventSubject.next(data)); // Jetzt korrekt getypt
+    ).subscribe(data => {
+      this.eventsListSubject.next(data); // Jetzt korrekt getypt
+    });
+  }
+
+  get paginatedData$(): Observable<TransformedEvent[]> {
+    return combineLatest([this.eventsList$, this.currentPage$]).pipe(
+      map(([events, currentPage]) => {
+        const startIndex = currentPage * this.pageSize;
+        const endIndex = startIndex + this.pageSize;
+        const paginated = events.slice(startIndex, endIndex);
+        return paginated;
+      })
+    );
+  }
+
+  // Paginierungsänderung verarbeiten
+  onPageChange(newPage: number): void {
+    this.currentPage = newPage; // Optional: bleibt für Debugging hier
+    this.currentPageSubject.next(newPage); // Synchronisiert den neuen Wert mit currentPage$
+  }
+
+  get totalPages(): number {
+    return Math.ceil(this.totalItems / this.pageSize);
   }
 
   // Transformiert Event-Daten in Card-Daten

@@ -4,24 +4,26 @@ import { CommonModule } from '@angular/common';
 import { Observable } from 'rxjs';
 import { CardComponent } from "../../../../shared/components/card/card.component";
 import { TransformedEvent } from '../interfaces/calendar.interfaces';
+import { PaginationButtonComponent } from "../../../../shared/components/pagination-button/pagination-button.component";
 
 @Component({
   selector: 'app-calendar',
   standalone: true,
-  imports: [CommonModule, CardComponent],
+  imports: [CommonModule, CardComponent, PaginationButtonComponent],
   templateUrl: './calendar.component.html',
   styleUrls: ['./calendar.component.scss']
 })
 export class CalendarComponent implements OnInit {
-  cardEvent$!: Observable<TransformedEvent[]>; // Kompaktes Event für die Karte
+  public eventsList$!: Observable<TransformedEvent[]>; // Kompaktes Event für die Karte
 
-  constructor(private calendarService: CalendarService) { }
+  constructor(public calendarService: CalendarService) { }
 
   ngOnInit(): void {
-    // Initialisiere die Daten
-    this.calendarService.initializeCalendarEvents();
-    this.calendarService.processCardEvents(); // Kompaktes Event erstellen
+    // Abonniere die gepipeten Events aus dem Service
+    this.eventsList$ = this.calendarService.paginatedData$; // Auf das paginierte Observable zugreifen
+  }
 
-    this.cardEvent$ = this.calendarService.cardEvent$;
+  onPageChange(page: number) {
+    this.calendarService.onPageChange(page); // Übergibt die Seite an den Service
   }
 }

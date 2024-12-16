@@ -1,3 +1,46 @@
-<ng-container *ngIf="cardEvent$ | async as data">
+<ng-container *ngIf="calendarService.paginatedData$ | async as data">
   <app-card *ngFor="let event of data" [data]="event"></app-card>
+
+  <div
+    class="pagination"
+    *ngIf="calendarService.totalItems > calendarService.pageSize"
+  >
+    <button
+      (click)="onPageChange(calendarService.currentPage + 1)"
+      [disabled]="
+        calendarService.currentPage === calendarService.totalPages - 1
+      "
+    >
+      <span class="material-symbols-rounded fs-46 color-white">
+        keyboard_double_arrow_right
+      </span>
+    </button>
+    <p>
+      <strong
+        >{{ calendarService.currentPage + 1 }} /
+        {{ calendarService.totalPages }}</strong
+      >
+    </p>
+    <button
+      (click)="onPageChange(calendarService.currentPage - 1)"
+      [disabled]="calendarService.currentPage === 0"
+    >
+      <span class="material-symbols-rounded fs-46 color-white">
+        keyboard_double_arrow_left
+      </span>
+    </button>
+  </div>
 </ng-container>
+
+<!-- <app-pagination-button
+  [currentPage]="currentPage$ | async"
+  (clickBack)="onPreviousPage()"
+  (clickForward)="onNextPage()"
+>
+</app-pagination-button> -->
+<!-- <app-pagination-button
+  [totalItems]="calendarService.totalItems"
+  [pageSize]="calendarService.pageSize"
+  [currentPage]="calendarService.currentPage"
+  (pageChange)="onPageChange($event)"
+></app-pagination-button> -->

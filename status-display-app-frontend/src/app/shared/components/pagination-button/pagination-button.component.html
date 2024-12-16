@@ -1,0 +1,26 @@
+<div *ngIf="totalPages && currentPage && totalPages > 1" class="pagination">
+  <button
+    class="pagination-button"
+    (click)="onForward()"
+    [disabled]="currentPage >= totalPages"
+  >
+    <span class="material-symbols-rounded fs-46 color-white">
+      keyboard_double_arrow_right
+    </span>
+  </button>
+  <span>{{ currentPage }} / {{ totalPages }}</span>
+  <button
+    class="pagination-button"
+    (click)="onBack()"
+    [disabled]="currentPage <= 1"
+  >
+    <span class="material-symbols-rounded fs-46 color-white">
+      keyboard_double_arrow_left
+    </span>
+  </button>
+</div>
+<div class="pagination" *ngIf="totalItems > pageSize">
+  <button (click)="onNext()" [disabled]="isLastPage">Next</button>
+  <span>{{ currentPage + 1 }} / {{ totalPages }}</span>
+  <button (click)="onPrev()" [disabled]="isFirstPage">Prev</button>
+</div>
