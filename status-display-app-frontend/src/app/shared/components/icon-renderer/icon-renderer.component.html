@@ -1,0 +1,16 @@
+<!-- Anzeige des SVG, wenn iconType 'svg' ist -->
+<img
+  [ngClass]="[defaultSvgClass, sizeClass]"
+  *ngIf="iconRender.iconType === 'svg' && iconRender.icon"
+  [src]="'assets/' + iconRender.icon + '.svg'"
+  alt="Icon"
+/>
+
+<!-- Anzeige des Font-Icons, wenn iconType 'font' ist -->
+<span
+  [ngClass]="[defaultFontClass, sizeClass]"
+  *ngIf="iconRender.iconType === 'font'"
+  class="material-symbols-rounded"
+>
+  {{ iconRender.icon }}
+</span>
