@@ -1,0 +1,37 @@
+<div class="full-card">
+  <div class="card-box1">
+    <app-icon-renderer
+      [defaultSvgClass]="'custom-svg-icon'"
+      [defaultFontClass]="'custom-font-icon'"
+      [sizeClass]="'small-icon'"
+      [iconRender]="iconRender"
+    ></app-icon-renderer>
+  </div>
+  <div class="pl-10">
+    <p class="ellipsis">
+      {{ todaysCardData.day }}
+      <strong>{{ todaysCardData.date }} {{ todaysCardData.time }}</strong>
+      <br />
+      {{ todaysCardData.title }}
+    </p>
+  </div>
+</div>
+
+<!-- <div class="full-card">
+  <div class="card-box1">
+    <strong *ngIf="cardData.time">{{ cardData.time }}</strong>
+    <strong *ngIf="!cardData.time">{{ cardData.day }}</strong>
+  </div>
+  <div class="pl-10 card-box2">
+    <strong>{{ cardData.date }} </strong>
+    <div class="content">
+      <app-icon-renderer
+        [defaultSvgClass]="'custom-svg-icon'"
+        [defaultFontClass]="'custom-font-icon'"
+        [sizeClass]="'small-icon'"
+        [iconRender]="iconRender"
+      ></app-icon-renderer>
+      <p class="ellipsis">{{ cardData.title }}</p>
+    </div>
+  </div>
+</div> -->
