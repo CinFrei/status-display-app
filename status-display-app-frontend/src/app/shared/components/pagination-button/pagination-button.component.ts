@@ -14,13 +14,6 @@ export interface PaginationButtonData {
   styleUrl: './pagination-button.component.scss'
 })
 export class PaginationButtonComponent {
-  // Eingabedaten: aktuelle Seite und Gesamtseiten
-  // @Input() currentPage: number | null = null;
-  // @Input() totalPages: number | null = null;
-
-  // @Output() clickBack = new EventEmitter<void>();
-  // @Output() clickForward = new EventEmitter<void>();
-
   @Input() totalItems!: number;
   @Input() pageSize!: number;
   @Input() currentPage!: number;
