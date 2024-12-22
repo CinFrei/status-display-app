@@ -1,19 +1,47 @@
 .full-card {
-  width: 470px;
+  width: 418px;
   height: 80px;
-  margin: 2.5px;
-  padding: 5px 0;
+  margin-top: 2.75px;
+  margin-left: 20px;
   display: flex;
   flex-direction: row;
   align-items: center;
-  justify-content: center;
+  justify-content: start;
   align-content: space-around;
   flex-wrap: wrap;
 }
 
+.card-box1 {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 70px;
+  height: 70px;
+  text-align: center;
+  border: solid 3px;
+  border-radius: 20px;
+}
+
+.card-box1 strong {
+  color: white;
+}
+
+.card-box2 {
+  width: 316px; /* Breite des Containers */
+}
+
+.card-box2 strong {
+  font-size: 22px;
+}
+
+.content {
+  display: flex;
+}
+
 .ellipsis {
-  width: 320px; /* Breite des Containers */
   white-space: nowrap; /* Verhindert Zeilenumbrüche */
   overflow: hidden; /* Schneidet überstehenden Inhalt ab */
   text-overflow: ellipsis; /* Zeigt "..." für abgeschnittenen Text an */
+  font-size: 24px;
+  margin-left: 5px;
 }

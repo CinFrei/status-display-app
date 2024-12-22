@@ -1,3 +1,5 @@
+import { IconRendererData } from "../../../../shared/components/icon-renderer/icon-renderer.component";
+
 export interface CalendarEvent {
   created: string; // Datum der Erstellung
   creator: Creator; // Creator-Objekt
@@ -32,9 +34,9 @@ export interface EventDate {
 
 
 export interface TransformedEvent {
-  day: string;
+  day: string | null;
   date: string;
   title: string;
-  time: string;
-  icon: string;
+  time: string | null;
+  icon: IconRendererData;
 }
