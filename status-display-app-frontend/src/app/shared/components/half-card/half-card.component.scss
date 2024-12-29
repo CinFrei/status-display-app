@@ -1,7 +1,7 @@
 .half-card {
-  width: 239px;
-  height: 80px;
-  margin: 2.5px 0;
+  width: 220px;
+  height: 82px;
+  margin-left: 15px;
   padding: 5px 0 5px 5px;
   display: flex;
   flex-direction: row;
@@ -16,8 +16,4 @@
   white-space: nowrap; /* Verhindert Zeilenumbrüche */
   overflow: hidden; /* Schneidet überstehenden Inhalt ab */
   text-overflow: ellipsis; /* Zeigt "..." für abgeschnittenen Text an */
-}
-
-img {
-  width: 60px;
 }

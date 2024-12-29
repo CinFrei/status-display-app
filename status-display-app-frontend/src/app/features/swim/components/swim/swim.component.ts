@@ -3,6 +3,7 @@ import { Observable } from 'rxjs';
 import { StaticHalfCardData, HalfCardComponent } from "../../../../shared/components/half-card/half-card.component";
 import { SwimService } from '../../services/swim.service';
 import { CommonModule } from '@angular/common';
+import { IconRendererData } from '../../../../shared/components/icon-renderer/icon-renderer.component';
 
 @Component({
   selector: 'app-swim',
@@ -13,9 +14,11 @@ import { CommonModule } from '@angular/common';
 export class SwimComponent implements OnInit {
   // Statische Daten für die Kindkomponente
   statData: StaticHalfCardData = {
-    icon: 'wave', // Name der SVG-Datei
-    iconType: 'svg',
     applyStrongTag: false
+  };
+  iconRender: IconRendererData = {
+    icon: 'wave',
+    iconType: 'svg'
   };
 
   // Dynamische Daten direkt aus dem Service (Observable)

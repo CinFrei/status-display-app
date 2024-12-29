@@ -2,8 +2,13 @@
   width: 100%;
   height: 100%;
   display: grid;
-  grid-template-columns: 80px 480px 240px; /* 3 Spalten */
+  grid-template-columns: 100px 460px 240px; /* 3 Spalten */
   grid-template-rows: 600px; /* Gesamthöhe */
+}
+
+.column-2 {
+  border-left: 3px solid #404654;
+  border-right: 3px solid #404654;
 }
 
 .see {

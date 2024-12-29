@@ -21,6 +21,6 @@ export class WeatherComponent {
     this.weatherDataService.processCompactWeather();
 
     this.compact$ = this.weatherDataService.processCompactWeather$;
-    console.log('ja wetter komponente', this.compact$)
+    // console.log('ja wetter komponente', this.compact$)
   }
 }

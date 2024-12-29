@@ -1,12 +1,14 @@
 <ng-container *ngIf="swimClubTime$ | async as data">
   <app-half-card
     [statData]="statData"
+    [iconRender]="iconRender"
     [obsDataContent1]="data"
     [obsDataContent2]="obsDataContent2"
   >
   </app-half-card>
   <app-half-card
     [statData]="statData"
+    [iconRender]="iconRender"
     [obsDataContent1]="data"
     [obsDataContent2]="obsDataContent2"
   >

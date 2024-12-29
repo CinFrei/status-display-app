@@ -70,6 +70,17 @@ export class TimeService {
     return `${now.getDate()}. ${monthName} ${now.getFullYear()}`;
   }
 
+  // Holt das aktuelle Datum im Format TT. Month YYYY
+  getCurrentDay(): string {
+    const now = new Date();
+    const months = [
+      'Januar', 'Februar', 'März', 'April', 'Mai', 'Juni',
+      'Juli', 'August', 'September', 'Oktober', 'November', 'Dezember'
+    ];
+    const monthName = months[now.getMonth()];
+    return `${now.getDate()}. ${monthName}`;
+  }
+
   // Holt den aktuellen Wochentag ausgeschrieben wie "Sonntag"
   getCurrentWeekDay(): string {
     const days = ['Sonntag', 'Montag', 'Dienstag', 'Mittwoch', 'Donnerstag', 'Freitag', 'Samstag'];
@@ -96,7 +107,7 @@ export class TimeService {
 
   // Gibt den aktuellen Wochentag-Stream ausgeschrieben zurück (Observable)
   getCurrendWeekDay$() {
-    return this.dateSubject.asObservable();
+    return this.weekDaySubject.asObservable();
   }
 
 }

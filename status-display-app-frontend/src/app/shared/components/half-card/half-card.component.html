@@ -1,16 +1,6 @@
 <div class="half-card">
   <!-- Anzeige des SVG, wenn iconType 'svg' ist und iconSvg vorhanden ist -->
-  <img
-    *ngIf="statData.iconType === 'svg' && statData.icon"
-    [src]="'assets/' + statData.icon + '.svg'"
-    alt="Icon"
-  />
-  <!-- Anzeige des Font-Icons, wenn iconType 'font' ist -->
-  <span
-    *ngIf="statData.iconType === 'font'"
-    class="material-symbols-rounded fs-60"
-    >{{ statData.icon }}</span
-  >
+  <app-icon-renderer [iconRender]="iconRender"></app-icon-renderer>
   <div class="pl-10">
     <p class="ellipsis-half">
       <strong *ngIf="statData.applyStrongTag">{{ obsDataContent1 }}</strong>
