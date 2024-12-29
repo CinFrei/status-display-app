@@ -43,7 +43,7 @@ export class CalendarService {
     this.callCount++;
     const currentCall = this.callCount;
     return this.http.get<CalendarEvent[]>(this.calendarEventURL).pipe(
-      tap(events => console.log(`fetchCalendarEvents API Call #${currentCall}:`, events)),
+      // tap(events => console.log(`fetchCalendarEvents API Call #${currentCall}:`, events)),
       catchError(err => {
         console.error(`Fehler bei API Call #${currentCall}:`, err);
         return of([]);
@@ -57,7 +57,7 @@ export class CalendarService {
       .pipe(
         startWith(0),
         switchMap(() => this.fetchCalendarEvents()),
-        tap(data => console.log('initializeAPICalendarEvents', data)),
+        // tap(data => console.log('initializeAPICalendarEvents', data)),
         catchError(err => {
           console.error('API-Fehler:', err);
           return of([]);
@@ -96,8 +96,6 @@ export class CalendarService {
           : this.getEmptyEventForToday();
         const transformedFutureEvents = this.transformToCardData(futureEvents);
 
-        console.log('todays Events', todayEvents)
-        console.log('zukünftige Events', futureEvents)
         // Heutige und zukünftige Events in ihre Subjects speichern
         this.todayEventsSubject$.next(transformedTodayEvents);
         this.futureEventsSubject$.next(transformedFutureEvents);
@@ -106,9 +104,7 @@ export class CalendarService {
         return { transformedTodayEvents, transformedFutureEvents };
       }),
       tap(data => {
-        console.log('Verarbeitete zukünftige Events:', data);
         this.totalItems = data.transformedTodayEvents.length + data.transformedFutureEvents.length; // Gesamtanzahl der zukünftigen Events setzen
-        console.log('Gesamtanzahl der Events:', this.totalItems);
       }),
       catchError(err => {
         console.error('Fehler bei der Verarbeitung von Events:', err);
@@ -164,12 +160,6 @@ export class CalendarService {
           adjustedStartIndex = startIndex - todayCount;
           adjustedEndIndex = adjustedStartIndex + this.pageSize;
         }
-
-        console.log('todayCount', todayCount);
-        console.log('currentPage', this.currentPage);
-        console.log('adjustedStartIndex', adjustedStartIndex);
-        console.log('adjustedEndIndex', adjustedEndIndex);
-
         return futureEvents.slice(adjustedStartIndex, adjustedEndIndex);
       })
     );
