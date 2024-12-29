@@ -28,10 +28,10 @@ export class CardComponent {    // Inhalt der Karte
     iconType: 'font'
   }
 
-  ngOnInit(): void {
-    //Called after the constructor, initializing input properties, and the first call to ngOnChanges.
-    //Add 'implements OnInit' to the class.
-    console.log('card icon', this.iconRender);
+  // ngOnInit(): void {
+  //   //Called after the constructor, initializing input properties, and the first call to ngOnChanges.
+  //   //Add 'implements OnInit' to the class.
+  //   console.log('card icon', this.iconRender);
 
-  }
+  // }
 }

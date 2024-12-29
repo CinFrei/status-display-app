@@ -1,47 +1,18 @@
-.full-card {
-  width: 418px;
-  height: 80px;
-  margin-top: 2.75px;
-  margin-left: 20px;
+.wrap-card {
+  width: 454px;
+  height: 82px;
   display: flex;
-  flex-direction: row;
+  flex-direction: column;
   align-items: center;
-  justify-content: start;
-  align-content: space-around;
-  flex-wrap: wrap;
+  background: rgb(198, 198, 198);
+  background: linear-gradient(
+    180deg,
+    rgba(198, 198, 198, 1) 0%,
+    rgba(255, 255, 255, 1) 100%
+  );
 }
 
-.card-box1 {
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  width: 70px;
-  height: 70px;
-  text-align: center;
-  border: solid 3px;
-  border-radius: 20px;
-}
-
-.card-box1 strong {
-  color: white;
-}
-
-.card-box2 {
-  width: 316px; /* Breite des Containers */
-}
-
-.card-box2 strong {
-  font-size: 22px;
-}
-
-.content {
-  display: flex;
-}
-
-.ellipsis {
-  white-space: nowrap; /* Verhindert Zeilenumbrüche */
-  overflow: hidden; /* Schneidet überstehenden Inhalt ab */
-  text-overflow: ellipsis; /* Zeigt "..." für abgeschnittenen Text an */
-  font-size: 24px;
-  margin-left: 5px;
-}
+// .wavey {
+//   border-bottom: 15px solid pink;
+//   border-image: url(../../../../assets/wave-line-white.svg) 12 67 round;
+// }

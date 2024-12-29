@@ -1,11 +1,10 @@
 import { Component, OnInit } from '@angular/core';
 import { CalendarService } from '../../services/calendar.service';
 import { CommonModule } from '@angular/common';
-import { Observable } from 'rxjs';
-import { TransformedEvent } from '../interfaces/calendar.interfaces';
 import { PaginationButtonComponent } from "../../../../shared/components/pagination-button/pagination-button.component";
 import { CardComponent } from "../../../../shared/components/card/card.component";
 import { TodaysCardComponent } from "../../../../shared/components/todays-card/todays-card.component";
+import { TimeService } from '../../../../core/services/time.service';
 
 @Component({
   selector: 'app-calendar',
@@ -14,15 +13,10 @@ import { TodaysCardComponent } from "../../../../shared/components/todays-card/t
   styleUrls: ['./calendar.component.scss']
 })
 export class CalendarComponent implements OnInit {
-  public eventsList$!: Observable<TransformedEvent[]>; // Kompaktes Event für die Karte
-  public todayEvents$!: Observable<TransformedEvent[]>;
-
-  constructor(public calendarService: CalendarService) { }
+  constructor(public calendarService: CalendarService, public timeService: TimeService) { }
 
   ngOnInit(): void {
     // Abonniere die gepipeten Events aus dem Service
-    this.eventsList$ = this.calendarService.paginatedData$; // Auf das paginierte Observable zugreifen
-    this.todayEvents$ = this.calendarService.todayEvents$; // Auf das paginierte Observable zugreifen
   }
 
   onPageChange(page: number) {
