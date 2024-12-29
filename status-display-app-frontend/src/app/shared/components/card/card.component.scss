@@ -1,19 +1,26 @@
-.full-card {
-  width: 470px;
-  height: 80px;
-  margin: 2.5px;
-  padding: 5px 0;
+.wrap-card {
+  width: 434px;
+  height: 82px;
+  margin-left: 20px;
   display: flex;
-  flex-direction: row;
+  align-items: center;
+}
+
+.card-border-box {
+  display: flex;
   align-items: center;
   justify-content: center;
-  align-content: space-around;
-  flex-wrap: wrap;
+  width: 70px;
+  height: 70px;
+  border: solid 3px;
+  border-radius: 20px;
 }
 
 .ellipsis {
-  width: 320px; /* Breite des Containers */
   white-space: nowrap; /* Verhindert Zeilenumbrüche */
   overflow: hidden; /* Schneidet überstehenden Inhalt ab */
   text-overflow: ellipsis; /* Zeigt "..." für abgeschnittenen Text an */
+  font-size: 24px;
+  margin-left: 5px;
+  width: 320px;
 }

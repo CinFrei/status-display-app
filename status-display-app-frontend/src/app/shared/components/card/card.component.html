@@ -1,13 +1,18 @@
-<div class="full-card">
-  <span class="material-symbols-rounded fs-60">{{ data.icon }}</span>
-  <span class="pr-10"
-    ><strong>{{ data.time }}</strong></span
-  >
+<div class="wrap-card">
+  <div class="card-border-box">
+    <app-icon-renderer
+      [defaultSvgClass]="'custom-svg-icon'"
+      [defaultFontClass]="'custom-font-icon'"
+      [sizeClass]="'small-icon'"
+      [iconRender]="iconRender"
+    ></app-icon-renderer>
+  </div>
   <div class="pl-10">
     <p class="ellipsis">
-      <strong>{{ data.day }} </strong> <small>{{ data.date }}</small>
+      {{ cardData.day }}
+      <strong>{{ cardData.date }} {{ cardData.time }}</strong>
       <br />
-      {{ data.title }}
+      {{ cardData.title }}
     </p>
   </div>
 </div>

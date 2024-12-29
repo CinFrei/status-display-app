@@ -1,3 +1,27 @@
-<div *ngFor="let card of cardData">
-  <app-card [data]="card"></app-card>
+<div class="wavey">
+  <h1 class="is-size-5 has-text-weight-semibold">
+    Heute ist {{ timeService.getCurrentWeekDay() }} der
+    {{ timeService.getCurrentDay() }}
+  </h1>
 </div>
+
+<ng-container *ngIf="calendarService.currentPage === 0">
+  <ng-container *ngIf="calendarService.todayEvents$ | async as todayData">
+    <app-todays-card [todaysCardData]="todayData"></app-todays-card>
+  </ng-container>
+</ng-container>
+
+<ng-container *ngIf="calendarService.paginatedData$ | async as data">
+  <app-card
+    *ngFor="let event of data"
+    [cardData]="event"
+    [iconRender]="event.icon"
+  ></app-card>
+</ng-container>
+
+<app-pagination-button
+  [totalItems]="calendarService.totalItems"
+  [pageSize]="calendarService.pageSize"
+  [currentPage]="calendarService.currentPage"
+  (pageChange)="onPageChange($event)"
+></app-pagination-button>

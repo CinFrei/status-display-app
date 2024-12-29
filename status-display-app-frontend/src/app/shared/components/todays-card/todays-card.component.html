@@ -1,0 +1,9 @@
+<ng-container *ngIf="todaysCardData as data">
+  <div class="wrap-card">
+    <app-card
+      *ngFor="let event of data"
+      [cardData]="event"
+      [iconRender]="event.icon"
+    ></app-card>
+  </div>
+</ng-container>

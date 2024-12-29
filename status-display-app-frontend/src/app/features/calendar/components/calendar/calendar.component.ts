@@ -1,31 +1,25 @@
-import { Component } from '@angular/core';
+import { Component, OnInit } from '@angular/core';
 import { CalendarService } from '../../services/calendar.service';
 import { CommonModule } from '@angular/common';
-import { Subject } from 'rxjs';
-import { CardComponent, CardData } from "../../../../shared/components/card/card.component";
+import { PaginationButtonComponent } from "../../../../shared/components/pagination-button/pagination-button.component";
+import { CardComponent } from "../../../../shared/components/card/card.component";
+import { TodaysCardComponent } from "../../../../shared/components/todays-card/todays-card.component";
+import { TimeService } from '../../../../core/services/time.service';
 
 @Component({
   selector: 'app-calendar',
-  imports: [CommonModule, CardComponent],
+  imports: [CommonModule, PaginationButtonComponent, CardComponent, TodaysCardComponent],
   templateUrl: './calendar.component.html',
-  styleUrl: './calendar.component.scss'
+  styleUrls: ['./calendar.component.scss']
 })
-export class CalendarComponent {
-  private readonly destroy$ = new Subject<void>();
+export class CalendarComponent implements OnInit {
+  constructor(public calendarService: CalendarService, public timeService: TimeService) { }
 
-  cardData: CardData[] = [];
-
-  constructor(private calendarService: CalendarService) { }
-
-  ngOnInit() {
-    this.calendarService.cardData$.subscribe(data => {
-      this.cardData = data;
-      console.log('Transformed CardData:', data);
-    });
+  ngOnInit(): void {
+    // Abonniere die gepipeten Events aus dem Service
   }
 
-  ngOnDestroy() {
-    this.destroy$.next(); // Signalisiert das Ende
-    this.destroy$.complete(); // Schließt das Subject
+  onPageChange(page: number) {
+    this.calendarService.onPageChange(page); // Übergibt die Seite an den Service
   }
 }

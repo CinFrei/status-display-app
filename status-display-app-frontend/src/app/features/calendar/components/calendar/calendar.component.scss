@@ -1,0 +1,48 @@
+h1 {
+  color: hsla(220deg, 14%, 26%, 1);
+  text-align: center;
+}
+
+.wavey {
+  height: 82px;
+  padding-top: 22px;
+  width: 100%;
+  background: rgb(198, 198, 198);
+  position: relative;
+}
+
+// .wavey:after {
+//   content: " ";
+//   height: 15px;
+//   width: 100%;
+//   position: absolute;
+//   top: 70px;
+//   left: 0px;
+//   z-index: -1;
+//   background: rgb(198, 198, 198);
+//   border-bottom: 15px solid;
+//   border-image: url(../../../../../assets/wave-line.svg) 12 67 round;
+// }
+
+.pagination {
+  display: block;
+  position: fixed;
+  top: 423px;
+  left: 535px;
+}
+
+.pagination button {
+  background-color: var(--bulma-primary-25);
+  border-radius: 30px;
+  width: 60px;
+  height: 55px;
+  display: flex;
+  color: white;
+  justify-content: center;
+  align-items: center;
+  z-index: 3;
+}
+
+.pagination p {
+  background-color: white;
+}

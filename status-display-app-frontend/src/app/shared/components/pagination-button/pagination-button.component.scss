@@ -1,0 +1,22 @@
+.pagination {
+  display: block;
+  position: fixed;
+  top: 430px;
+  left: 535px;
+}
+
+.pagination button {
+  background-color: var(--bulma-primary-25);
+  border-radius: 30px;
+  width: 60px;
+  height: 55px;
+  display: flex;
+  color: white;
+  justify-content: center;
+  align-items: center;
+  z-index: 3;
+}
+
+.pagination p {
+  background-color: white;
+}
