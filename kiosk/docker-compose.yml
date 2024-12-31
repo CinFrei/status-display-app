@@ -20,7 +20,7 @@ services:
       - "5901:5900"
     environment:
       # - URL=https://www.hvv.de/de/fahrplaene/abruf-fahrplaninfos/abfahrten-auf-ihrem-monitor/abfahrten-anzeige?show=e475a5224aae4a0bb3b998c5e34186d6
-      - URL=http://frontend:4200/
+      - URL=http://frontend/
       - WINDOW_WIDTH=600
       - WINDOW_HEIGHT=800
       - SCALE=1.5

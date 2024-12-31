@@ -3,7 +3,7 @@
 set -x
 
 # handle defaults
-URL="${URL:-http://frontend:4200/}"
+URL="${URL:-http://frontend/}"
 WINDOW_WIDTH="${WINDOW_WIDTH:-800}"
 WINDOW_HEIGHT="${WINDOW_HEIGHT:-600}"
 SCALE="${SCALE:-1.0}"

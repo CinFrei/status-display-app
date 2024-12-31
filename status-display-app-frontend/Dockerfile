@@ -1,13 +1,27 @@
-FROM node:alpine
+# 1. Build-Stage: Erstelle die Angular-App
+FROM node:alpine AS build
 
+# Setze das Arbeitsverzeichnis
 WORKDIR /usr/src/app
 
-COPY . /usr/src/app
+# Kopiere package.json und package-lock.json, um nur relevante Schritte zu invalidieren
+COPY package*.json ./
 
-RUN npm install -g @angular/cli
-
+# Installiere die Abhängigkeiten
 RUN npm install
 
-EXPOSE 4200
+# Kopiere den Rest des Codes und führe den Build aus
+COPY . .
+RUN npm run build -- --configuration production
 
-CMD ["ng", "serve", "--host", "0.0.0.0"]
+# 2. Runtime-Stage: Nutze Nginx zur Auslieferung
+FROM nginx:alpine
+
+# Kopiere die gebauten Dateien aus der Build-Stage in den Webroot von Nginx
+COPY --from=build /usr/src/app/dist/status-display-app/browser /usr/share/nginx/html
+
+# Exponiere Port 80 für die Auslieferung
+EXPOSE 80
+
+# Standard-Befehl: Starte Nginx
+CMD ["nginx", "-g", "daemon off;"]
