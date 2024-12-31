@@ -9,12 +9,11 @@ COPY package*.json ./
 
 # Installiere die Abhängigkeiten
 RUN npm install
-RUN npm install -g @angular/cli
 
 # Kopiere den Rest des Codes und führe den Build aus
 COPY . .
-
-RUN ng build --configuration=production
+# Führe den Build aus
+RUN npm run build -- --configuration production
 
 # 2. Runtime-Stage: Nutze Nginx zur Auslieferung
 FROM nginx:alpine
