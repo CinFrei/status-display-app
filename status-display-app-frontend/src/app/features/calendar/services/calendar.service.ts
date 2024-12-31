@@ -3,17 +3,15 @@ import { HttpClient } from '@angular/common/http';
 import { BehaviorSubject, catchError, combineLatest, map, Observable, of, partition, ReplaySubject, startWith, switchMap, tap } from 'rxjs';
 import { TimersService } from '../../../core/services/timers.service';
 import { CalendarEvent, TransformedEvent } from '../components/interfaces/calendar.interfaces';
-import { environment } from '../../../../environments/environment';
 import { IconRendererData } from '../../../shared/components/icon-renderer/icon-renderer.component';
+import { environment } from '../../../../environments/environment';
 
 @Injectable({
   providedIn: 'root',
 })
 export class CalendarService {
   private callCount = 0;
-  // private calendarEventURL = `${environment.backendCalendarUrl}`;
-  private calendarEventURL = `http://localhost:3000/api/calendar`;
-  // private calendarEventURL = `http://backend:3000/api/calendar`;
+  private calendarEventURL = `${environment.backendCalendarUrl}`;
 
   private apiCalendarEventsSubject$ = new BehaviorSubject<CalendarEvent[]>([]);
   readonly apiCalendarEvents$ = this.apiCalendarEventsSubject$.asObservable();
