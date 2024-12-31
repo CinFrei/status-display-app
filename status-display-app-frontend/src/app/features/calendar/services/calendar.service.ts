@@ -13,6 +13,7 @@ export class CalendarService {
   private callCount = 0;
   // private calendarEventURL = `${environment.backendCalendarUrl}`;
   private calendarEventURL = `http://localhost:3000/api/calendar`;
+  // private calendarEventURL = `http://backend:3000/api/calendar`;
 
   private apiCalendarEventsSubject$ = new BehaviorSubject<CalendarEvent[]>([]);
   readonly apiCalendarEvents$ = this.apiCalendarEventsSubject$.asObservable();

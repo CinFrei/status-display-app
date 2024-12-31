@@ -2,8 +2,17 @@
   width: 100%;
   height: 100%;
   display: grid;
-  grid-template-columns: 100px 460px 240px; /* 3 Spalten */
-  grid-template-rows: 600px; /* Gesamthöhe */
+  grid-template-columns: 14% 58% 28%; /* 3 Spalten */
+  grid-template-rows: repeat(7, 14.3% [row-start]); /* Gesamthöhe */
+  justify-items: center;
+  grid-template-areas:
+    "time main swim"
+    "weather main swim"
+    "weather main half"
+    "weather main half"
+    "weather main half"
+    "weather main half"
+    "akku main half";
 }
 
 .column-2 {

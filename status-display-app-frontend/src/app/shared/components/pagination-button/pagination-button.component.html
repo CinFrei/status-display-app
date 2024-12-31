@@ -1,15 +1,25 @@
 <div class="pagination" *ngIf="totalItems > pageSize">
-  <button (click)="onNext()" [disabled]="isLastPage">
-    <span class="material-symbols-rounded fs-46 color-white">
+  <button
+    (click)="onNext()"
+    [disabled]="isLastPage"
+    class="is-flex is-align-items-center is-justify-content-center"
+  >
+    <strong class="material-symbols-rounded is-size-2 has-text-primary-100">
       keyboard_double_arrow_right
-    </span>
+    </strong>
   </button>
   <p>
-    <strong>{{ currentPage + 1 }} / {{ totalPages }}</strong>
+    <strong class="has-text-primary is-size-6"
+      >{{ currentPage + 1 }} / {{ totalPages }}</strong
+    >
   </p>
-  <button (click)="onPrev()" [disabled]="isFirstPage">
-    <span class="material-symbols-rounded fs-46 color-white">
+  <button
+    (click)="onPrev()"
+    [disabled]="isFirstPage"
+    class="is-flex is-align-items-center is-justify-content-center"
+  >
+    <strong class="material-symbols-rounded is-size-2 has-text-primary-100">
       keyboard_double_arrow_left
-    </span>
+    </strong>
   </button>
 </div>

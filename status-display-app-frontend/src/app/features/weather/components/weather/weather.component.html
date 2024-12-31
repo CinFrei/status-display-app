@@ -1,13 +1,12 @@
 <ng-container *ngIf="compact$ | async as data">
-  <!--  -->
+  <!-- Aktuelle Wetterdaten -->
   <ng-container>
     <app-icon-circle
       [icon]="data.wetterCode15.icon"
       [content]="data.temperatur15 + '°'"
     ></app-icon-circle>
   </ng-container>
-
-  <!-- Kompakte Wetterdaten -->
+  <!-- Aktuelle Wetterereignisse -->
   <ng-container *ngFor="let event of data.compact">
     <app-icon-circle
       [icon]="event.icon"

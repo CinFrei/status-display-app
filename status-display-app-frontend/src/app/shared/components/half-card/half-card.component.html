@@ -1,11 +1,13 @@
-<div class="half-card">
+<div class="wrap-half-card pl-4 is-flex is-align-items-center">
   <!-- Anzeige des SVG, wenn iconType 'svg' ist und iconSvg vorhanden ist -->
-  <app-icon-renderer [iconRender]="iconRender"></app-icon-renderer>
-  <div class="pl-10">
-    <p class="ellipsis-half">
+  <div class="half-card-icon">
+    <app-icon-renderer [iconRender]="iconRender"></app-icon-renderer>
+  </div>
+  <div class="half-card-content-box pl-3 is-size-5">
+    <p class="ellipsis">
       <strong *ngIf="statData.applyStrongTag">{{ obsDataContent1 }}</strong>
       <span *ngIf="!statData.applyStrongTag">{{ obsDataContent1 }}</span>
     </p>
-    <p class="ellipsis-half">{{ obsDataContent2 }}</p>
+    <p class="ellipsis">{{ obsDataContent2 }}</p>
   </div>
 </div>

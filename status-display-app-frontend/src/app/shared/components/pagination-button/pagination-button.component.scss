@@ -1,8 +1,8 @@
 .pagination {
   display: block;
-  position: fixed;
-  top: 430px;
-  left: 535px;
+  position: absolute;
+  top: 443px;
+  left: 432px;
 }
 
 .pagination button {
@@ -10,11 +10,7 @@
   border-radius: 30px;
   width: 60px;
   height: 55px;
-  display: flex;
-  color: white;
-  justify-content: center;
-  align-items: center;
-  z-index: 3;
+  z-index: 6;
 }
 
 .pagination p {

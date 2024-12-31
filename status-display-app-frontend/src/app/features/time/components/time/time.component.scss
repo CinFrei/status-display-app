@@ -1,7 +1,4 @@
-.date {
-  width: 60px;
-  height: 82px;
-  display: flex;
-  align-items: center;
-  justify-content: center;
+:host {
+  grid-area: time;
+  align-self: center;
 }

@@ -1,0 +1,7 @@
+:host {
+  grid-area: weather;
+  align-content: space-between;
+  display: grid;
+  grid-template-rows: repeat(5, 20% [row-start]);
+  align-items: center;
+}

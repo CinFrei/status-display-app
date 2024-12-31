@@ -1,5 +1,7 @@
-<div class="wrap-card">
-  <div class="card-border-box">
+<div class="wrap-card pl-4 has-text-primary is-flex is-align-items-center">
+  <div
+    class="card-border-box is-flex is-justify-content-center is-align-items-center"
+  >
     <app-icon-renderer
       [defaultSvgClass]="'custom-svg-icon'"
       [defaultFontClass]="'custom-font-icon'"
@@ -7,12 +9,15 @@
       [iconRender]="iconRender"
     ></app-icon-renderer>
   </div>
-  <div class="pl-10">
-    <p class="ellipsis">
-      {{ cardData.day }}
-      <strong>{{ cardData.date }} {{ cardData.time }}</strong>
+  <div class="card-content-box pl-3">
+    <p class="ellipsis is-size-4">
+      <span class="#">
+        {{ cardData.day }} {{ cardData.date }} {{ cardData.time }}</span
+      >
       <br />
-      {{ cardData.title }}
+      <span class="is-italic">
+        {{ cardData.title }}
+      </span>
     </p>
   </div>
 </div>

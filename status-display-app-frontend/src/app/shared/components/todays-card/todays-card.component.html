@@ -1,9 +1,23 @@
-<ng-container *ngIf="todaysCardData as data">
-  <div class="wrap-card">
-    <app-card
-      *ngFor="let event of data"
-      [cardData]="event"
-      [iconRender]="event.icon"
-    ></app-card>
+<div class="wrap-card pl-4 has-text-primary is-flex is-align-items-center">
+  <div
+    class="card-border-box bg-diagonalLines is-flex is-justify-content-center is-align-items-center"
+  >
+    <app-icon-renderer
+      [defaultSvgClass]="'custom-svg-icon'"
+      [defaultFontClass]="'custom-font-icon'"
+      [sizeClass]="'small-icon'"
+      [iconRender]="iconRender"
+    ></app-icon-renderer>
   </div>
-</ng-container>
+  <div class="card-content-box pl-3">
+    <p class="ellipsis is-size-4">
+      <strong class="has-text-primary">
+        {{ todaysCardData.day }} {{ todaysCardData.date }}
+        {{ todaysCardData.time }} </strong
+      ><br />
+      <span class="#">
+        {{ todaysCardData.title }}
+      </span>
+    </p>
+  </div>
+</div>
