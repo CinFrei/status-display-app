@@ -5,14 +5,15 @@
   </h1>
 </div>
 
-<ng-container *ngIf="calendarService.todayEvents$ | async as todayData">
-  <app-todays-card
-    *ngFor="let event of todayData"
-    [todaysCardData]="event"
-    [iconRender]="event.icon"
-  ></app-todays-card>
+<ng-container *ngIf="calendarService.currentPage === 0">
+  <ng-container *ngIf="calendarService.todayEvents$ | async as todayData">
+    <app-todays-card
+      *ngFor="let event of todayData"
+      [todaysCardData]="event"
+      [iconRender]="event.icon"
+    ></app-todays-card>
+  </ng-container>
 </ng-container>
-
 <ng-container *ngIf="calendarService.paginatedData$ | async as data">
   <app-card
     *ngFor="let event of data"
