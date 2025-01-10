@@ -1,4 +1,4 @@
-version: '3.9'
+version: "3.9"
 services:
   backend:
     build:
@@ -30,7 +30,7 @@ services:
 
   kiosk:
     build:
-      context: ./kiosk
+      context: ./vnc-kiosk-server-custom
     networks:
       - app-network
     ports:
