@@ -11,7 +11,6 @@ VNC_PASSWORD="${VNC_PASSWORD:-badpass}"
 EXTRA_CHROMIUM_ARGS="${EXTRA_CHROMIUM_ARGS:-}"
 EXTRA_VNC_ARGS="${EXTRA_VNC_ARGS:-}"
 EXTRA_X_ARGS="${EXTRA_X_ARGS:-}"
-
 # TODO add extra args for xvfb and x11vnc (nocursor)
 
 ## Hardcoded Vars
@@ -26,6 +25,14 @@ VIRTUAL_DISPLAY=":99"      # Xvfb will create a virtual display with this identi
 ## Generated Vars
 WINDOW_SIZE_VNC="${WINDOW_WIDTH}x${WINDOW_HEIGHT}"      # x11vnc wants separated by x
 WINDOW_SIZE_CHROMIUM="${WINDOW_WIDTH},${WINDOW_HEIGHT}" # chromium wants separated by ,
+
+## Landscape Mode
+LANDSCAPE_MODE_FLAG=""
+
+# Aktiviere die Extension nur, wenn `ENABLE_LANDSCAPE_MODE` auf true steht
+if [ "$ENABLE_LANDSCAPE_MODE" = "true" ]; then
+  LANDSCAPE_MODE_FLAG="--load-extension=/extension"
+fi
 
 #   TODO if we do this we should also do the xdotool thing like firefox_wrapper does, to cleanly stop chromium
 # handler for killing things off when container is stopped
@@ -159,6 +166,7 @@ CHROMIUM_CMD="export DISPLAY=$DISPLAY; chromium \
 	--ignore-certificate-errors \
 	--user-data-dir=$USER_DATA_DIR \
 	--kiosk $EXTRA_CHROMIUM_ARGS \
+  $LANDSCAPE_MODE_FLAG \
 	--app=$URL"
 
 echo ""

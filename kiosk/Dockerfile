@@ -4,6 +4,7 @@ FROM debian:bullseye-slim
 #RUN [ "cross-build-start" ]
 
 ENV DEBIAN_FRONTEND noninteractive
+ENV ENABLE_LANDSCAPE_MODE=true
 
 RUN apt-get update
 RUN apt-get install -y chromium
@@ -18,6 +19,9 @@ RUN addgroup chromium tty
 
 # end building for other arch
 #RUN [ "cross-build-end" ]
+
+#landscape extension
+COPY landscape-extension /extension
 
 COPY start_kiosk.sh /root/start_kiosk.sh
 

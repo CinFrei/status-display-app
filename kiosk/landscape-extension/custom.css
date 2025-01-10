@@ -1,0 +1,6 @@
+body {
+    rotate: 90deg;
+    top: 100px;
+    position: absolute;
+    left: -100px;
+}
