@@ -1,62 +1,117 @@
-# Status Display App
+# Status-Display-App für Kindle Touch E-Ink
 
-This project is a status display application consisting of two main parts:
+## Overview
 
-- **Frontend**: Angular application
-- **Backend**: Node.js with Express.js
+This application enables the display of status information on a Kindle Touch E-Ink display. It combines:
 
-### Project Structure
+- **An Angular frontend app**, to display the status data in an organized manner.
+- **A Node.js backend with Express.js**, which processes and provides the necessary data.
+- **A Kiosk mode**, based on the helpful Docker VNC Kiosk server by [BishopDynamics](https://github.com/bishopdynamics/kindle-touch-kiosk).
 
-- **Frontend**: Located in the `frontend` directory. The frontend is built using Angular and interacts with the backend API.
-- **Backend**: Located in the `backend` directory. The backend is built with Node.js and Express.js, handling the logic for data processing and API communication.
+## Acknowledgements
 
-For detailed setup and configuration instructions, refer to the `README.md` files in the respective directories:
+The VNC Kiosk Server `vnc-kiosk-server-custom` is based on the original [VNC Kiosk Server by BishopDynamics](https://github.com/bishopdynamics/kindle-touch-kiosk/tree/main/docker-vnc-kiosk-server).
 
-- [Frontend README](frontend/README.md)
-- [Backend README](backend/README.md)
+**Modifications**:
 
-### Environment Variables
+- The password was changed (the original developer used 'badpass' as a placeholder).
+- Some parts of the Docker Compose configuration were removed or adjusted to simplify the setup.
 
-Both the frontend and backend require environment variables to be configured before starting the project. Instructions for creating and managing the environment files can be found in the individual `README.md` files:
+## Installation
 
-- **Frontend**: See the [frontend/README.md](frontend/README.md) for details on configuring environment variables.
-- **Backend**: See the [backend/README.md](backend/README.md) for details on configuring environment variables.
+### 1. **Prerequisites**:
 
-### Project Setup and Start
+- **A Kindle Touch with E-Ink display** (Instructions for converting a Kindle into a VNC monitor can be found at [MobileReads](https://wiki.mobileread.com/wiki/K5_Index), or comfortable at [BishopDynamics kindle-touch-kiosk](https://github.com/bishopdynamics/kindle-touch-kiosk/tree/main)).
+- **Docker**, to run the app and the Kiosk.
+- **Google Calendar API** service account API to use your calendar.
+- **Lat, Long and TimeZone**, for weather an time.
+- **Node.js and Angular**, for app development (if desired).
 
-1. **Install Dependencies**  
-   First, install the required dependencies for both the frontend and backend. Run the following commands from the root directory:
+### 2. **Steps**:
 
-   ```bash
-   npm install
-   ```
+- ### backend
 
-This will install dependencies for both the frontend and backend.
+  - Create an **Google Service Api Code** and connect it to your **personal calendar** [Google Calendar API Setup Guide](./google-calendar-setup-guide.md)
+  - Create in `status-display-app-backend` an `.env` with these vars:
+    ```js
+    CALENDAR_ID=123example@group.calendar.google.com
+    MOON_CALENDAR_ID=123example@group.calendar.google.com
+    BIRTHSDAYS_CALENDAR_ID=123example@group.calendar.google.com
+    ```
+  - Create in `status-display-app-backend` an `service-account.json` with these vars:
+    ```json
+    {
+      "type": "service_account",
+      "project_id": "#",
+      "private_key_id": "#",
+      "private_key": "#",
+      "client_email": "#",
+      "client_id": "#",
+      "auth_uri": "#",
+      "token_uri": "#",
+      "auth_provider_x509_cert_url": "#",
+      "client_x509_cert_url": "#",
+      "universe_domain": "#"
+    }
+    ```
 
-2. **Start the Backend Server**
-   Navigate to the backend directory and start the server with nodemon:
+- ### frontend
 
-```bash
-cd backend
-npm run dev
+  - Create in `status-display-app-frontend/src/environments` an `environment.production.ts` with these vars:
+
+    ```typescript
+    export const environment = {
+      production: true,
+      latitude: "#",
+      longitude: "#",
+      timezone: "#",
+      backendCalendarUrl: "http://backend:3000/api/calendar",
+
+      PERSON1_EMAIL: "#",
+      PERSON2_EMAIL: "#",
+      HOUSEHOLD_CALENDAR_MAIL: "#",
+      BIRTHDAY_CALENDAR_MAIL: "#",
+      HOLIDAY_CALENDAR_MAIL: "#",
+      MOON_CALENDAR_MAIL: "#",
+    };
+    ```
+
+  - Create in `status-display-app-frontend/src/environments` an `environment.ts` with these vars:
+
+    ```typescript
+    export const environment = {
+      production: true,
+      latitude: "#",
+      longitude: "#",
+      timezone: "#",
+      backendCalendarUrl: "http://localhost:3000/api/calendar",
+
+      PERSON1_EMAIL: "#",
+      PERSON2_EMAIL: "#",
+      HOUSEHOLD_CALENDAR_MAIL: "#",
+      BIRTHDAY_CALENDAR_MAIL: "#",
+      HOLIDAY_CALENDAR_MAIL: "#",
+      MOON_CALENDAR_MAIL: "#",
+    };
+    ```
+
+- ### kiosk
+  - Create in `vnc-kiosk-server-custom` an `.env` with these var:
+    ```js
+    MY_SECRET_PASSWORD = password;
+    ```
+
+## Start
+
+In root write in shell
+
+```shell
+docker compose up --build
 ```
 
-(If error: Make sure nodemon is installed as a dev dependency, or install it globally using npm install -g nodemon)
+## License
 
-3. **Start the Frontend Development Server**
-   Navigate to the frontend directory and start the Angular development server:
+The [frontend](./status-display-app-frontend/) `status-display-app-frontend` and [backend](./status-display-app-backend/) `status-display-app-backend` components of this project are licensed under the [MIT License](https://en.wikipedia.org/wiki/MIT_License#License_terms).
+See the LICENSE file for details. ©CinFrei.
 
-```bash
-cd ../frontend
-ng serve
-```
-
-Once both servers are running, the application will be accessible in your browser at http://localhost:4200/.
-
-### Additional Information
-
-For further details on how to work with the Angular frontend, please refer to the [frontend/README.md](frontend/README.md).
-
-For further details on how to work with the Node.js/Express.js backend, please refer to the [backend/README.md](backend/README.md).
-
-Dieses Projekt nutzt einen angepassten Fork von [Kindle Touch Kiosk](https://github.com/bishopdynamics/kindle-touch-kiosk), der unter der MIT-Lizenz veröffentlicht wurde.
+The [kiosk](./vnc-kiosk-server-custom/) `vnc-kiosk-server-custom` is based on the publicly shared code by [BishopDynamics](https://github.com/bishopdynamics/kindle-touch-kiosk). Modifications include changes to the password, the addition of a landscape extension and adjustments to the Docker Compose configuration.

@@ -1,6 +1,9 @@
 {
-  "name": "status-display-app",
+  "name": "status-display-app-frontend",
   "version": "0.0.0",
+  "description": "Display status data on Kindle Touch E-Ink.",
+  "author": "CinFrei <dev@cinfrei.de>",
+  "license": "MIT",
   "scripts": {
     "ng": "ng",
     "start": "ng serve",
