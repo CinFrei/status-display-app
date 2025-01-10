@@ -13,6 +13,9 @@ RUN apt-get install -y procps gawk dbus-x11 xserver-xorg-video-dummy
 
 # black wallpaper
 COPY wallpaper.png /etc/wallpaper.png
+# vnc password
+COPY vnc_password.txt /etc/vnc_password
+RUN chmod 600 /etc/vnc_password
 
 RUN adduser --system --uid 5000 --disabled-password --shell /bin/bash  -q chromium
 RUN addgroup chromium tty

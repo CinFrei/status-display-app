@@ -7,7 +7,9 @@ URL="${URL:-http://frontend/}"
 WINDOW_WIDTH="${WINDOW_WIDTH:-600}"
 WINDOW_HEIGHT="${WINDOW_HEIGHT:-800}"
 SCALE="${SCALE:-1.0}"
-VNC_PASSWORD="${VNC_PASSWORD:-badpass}"
+# Replace developer's placeholder password ('badpass') with an environment variable for better security.
+# You can still use the original placeholder or hardcode a password if needed, but using an environment variable is recommended.
+VNC_PASSWORD="$(cat /etc/vnc_password)"
 EXTRA_CHROMIUM_ARGS="${EXTRA_CHROMIUM_ARGS:-}"
 EXTRA_VNC_ARGS="${EXTRA_VNC_ARGS:-}"
 EXTRA_X_ARGS="${EXTRA_X_ARGS:-}"
