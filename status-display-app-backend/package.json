@@ -1,5 +1,5 @@
 {
-  "name": "status-display-app-frontend",
+  "name": "status-display-app-backend",
   "version": "0.0.0",
   "description": "Display status data on Kindle Touch E-Ink.",
   "author": "CinFrei <dev@cinfrei.de>",
