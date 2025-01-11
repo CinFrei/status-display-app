@@ -96,9 +96,9 @@ The VNC Kiosk Server `vnc-kiosk-server-custom` is based on the original [VNC Kio
     ```
 
 - ### kiosk
-  - Create in `vnc-kiosk-server-custom` an `.env` with these var:
+  - Create in `vnc-kiosk-server-custom` an `vnc_password.txt` with your password:
     ```js
-    MY_SECRET_PASSWORD = password;
+    badpass;
     ```
 
 ## Start
