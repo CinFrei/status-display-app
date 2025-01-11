@@ -1,8 +1,8 @@
-version: "3.9"
 services:
   backend:
     build:
       context: ./status-display-app-backend
+    restart: unless-stopped
     environment:
       - TZ=Europe/Berlin
     volumes:
@@ -16,6 +16,7 @@ services:
   frontend:
     build:
       context: ./status-display-app-frontend
+    restart: unless-stopped
     environment:
       - TZ=Europe/Berlin
     volumes:
@@ -31,15 +32,16 @@ services:
   kiosk:
     build:
       context: ./vnc-kiosk-server-custom
-    networks:
-      - app-network
-    ports:
-      - "5901:5900"
+    restart: unless-stopped
     environment:
       - URL=http://frontend
       - TZ=Europe/Berlin
     volumes:
       - /etc/localtime:/etc/localtime:ro
+    ports:
+      - "5901:5900"
+    networks:
+      - app-network
     depends_on:
       - frontend
       - backend
@@ -48,3 +50,4 @@ services:
 networks:
   app-network:
     driver: bridge
+    name: status_display_app_network

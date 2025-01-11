@@ -1,0 +1,39 @@
+name: Deploy to Build & Run Server
+
+on:
+  push:
+    branches:
+      - deploy # deployment workflow triggered by push on deploy branch
+
+jobs:
+  deploy:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Check out the code
+        uses: actions/checkout@v3
+
+      - name: Set up SSH
+        uses: appleboy/ssh-action@v0.1.0
+        with:
+          host: ${{ secrets.SERVER_IP }}
+          username: ${{ secrets.USERNAME }}
+          key: ${{ secrets.SSH_KEY }}
+
+      - name: Ensure project directory exists
+        run: mkdir -p ${{ secrets.PROJECT_PATH }}
+
+      - name: Stop running containers and delete images
+        run: |
+          cd ${{ secrets.PROJECT_PATH }}
+          docker-compose down --rmi all
+
+      - name: Update project code
+        run: |
+          cd ${{ secrets.PROJECT_PATH }}
+          git pull
+
+      - name: Build and restart containers
+        run: |
+          cd ${{ secrets.PROJECT_PATH }}
+          docker-compose up -d --build
