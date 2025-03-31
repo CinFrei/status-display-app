@@ -1,4 +1,7 @@
-# Status-Display-App für Kindle Touch E-Ink
+
+![Stats-Display-App-Mock-Up](https://github.com/user-attachments/assets/c2548be2-fe50-4575-b465-3450bef8e241)
+
+# Status-Display-App for Kindle Touch E-Ink
 
 ## Overview
 
